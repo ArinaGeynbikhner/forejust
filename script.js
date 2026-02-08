@@ -3,14 +3,18 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
+// --------------------
 // Получаем токены из URL
+// --------------------
 let tokens = parseInt(new URLSearchParams(window.location.search).get("tokens")) || 0;
 
 // DOM элемент для отображения токенов
 const tokensEl = document.getElementById("tokens");
 tokensEl.innerText = tokens;
 
+// --------------------
 // Данные кейсов
+// --------------------
 const cases = [
     {
         id: 1,
@@ -32,7 +36,9 @@ const cases = [
     }
 ];
 
+// --------------------
 // DOM элементы
+// --------------------
 const casesListEl = document.getElementById("cases-list");
 const caseViewEl = document.getElementById("case-view");
 const modalEl = document.getElementById("customModal");
@@ -100,7 +106,7 @@ function vote(caseId, choice) {
     tg.sendData(JSON.stringify({
         case_id: caseId,
         choice: choice,
-        tokens: tokens
+        tokens: tokens // синхронизация токенов
     }));
     alert("✅ Ваш голос принят!");
 }
@@ -133,15 +139,17 @@ function submitCustom() {
     const ok = confirm(`✍️ Свой прогноз стоит 1 токен\n💎 У вас: ${tokens}\nПродолжить?`);
     if (!ok) return;
 
+    // уменьшаем токен и отправляем в бот
+    tokens -= 1;
+    tokensEl.innerText = tokens;
+
     tg.sendData(JSON.stringify({
         case_id: currentCaseId,
         choice: "custom",
         text: text,
-        tokens: tokens - 1
+        tokens: tokens // передаем обновленный баланс
     }));
 
-    tokens -= 1;
-    tokensEl.innerText = tokens;
     closeModal();
     alert("✅ Прогноз отправлен!");
 }
@@ -150,6 +158,7 @@ function submitCustom() {
 // Инициализация
 // --------------------
 renderCases();
+
 
 
 
