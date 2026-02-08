@@ -1,0 +1,14 @@
+const tg = window.Telegram.WebApp;
+
+function vote(caseId, choice) {
+    tg.sendData(JSON.stringify({ case_id: caseId, choice: choice }));
+    alert("Ваш выбор отправлен!");
+}
+
+function custom(caseId) {
+    let text = prompt("Напишите свой прогноз:");
+    if(text) {
+        tg.sendData(JSON.stringify({ case_id: caseId, choice: "custom", text: text }));
+        alert("Ваш прогноз отправлен!");
+    }
+}
