@@ -1,14 +1,29 @@
 const tg = window.Telegram.WebApp;
 
+// Голос за эксперта
 function vote(caseId, choice) {
-    tg.sendData(JSON.stringify({ case_id: caseId, choice: choice }));
-    alert("Ваш выбор отправлен!");
+    // Отправляем данные боту
+    tg.sendData(JSON.stringify({ 
+        case_id: caseId, 
+        choice: choice 
+    }));
+    // Подтверждение для пользователя
+    alert("✅ Ваш голос отправлен!");
 }
 
-function custom(caseId) {
-    let text = prompt("Напишите свой прогноз:");
-    if(text) {
-        tg.sendData(JSON.stringify({ case_id: caseId, choice: "custom", text: text }));
-        alert("Ваш прогноз отправлен!");
+// Свой прогноз (списывает токены)
+function customVote(caseId) {
+    // Спрашиваем текст прогноза
+    let text = prompt("Введите свой прогноз (спишется 1 токен):");
+    if(text){
+        // Отправляем данные боту
+        tg.sendData(JSON.stringify({ 
+            case_id: caseId, 
+            choice: "custom", 
+            text: text 
+        }));
+        // Подтверждение
+        alert("✅ Ваш прогноз отправлен! 1 токен списан.");
     }
 }
+
