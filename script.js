@@ -2,127 +2,48 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-// --------------------
-// ТОКЕНЫ ИЗ URL
-// --------------------
-const params = new URLSearchParams(window.location.search);
-let tokens = parseInt(params.get("tokens")) || 0;
+let tokens = parseInt(new URLSearchParams(window.location.search).get("tokens")) || 0;
+document.getElementById("tokens").innerText = tokens;
 
-const tokensEl = document.getElementById("tokens");
-tokensEl.innerText = tokens;
-
-// --------------------
-// ДАННЫЕ КЕЙСОВ
-// --------------------
 const cases = [
-    {
-        id: 1,
-        title: "Выборы в X",
-        description: "Кто победит на президентских выборах в стране X?",
-        experts: [
-            { id: "expert_1", name: "Эксперт A", text: "Победа кандидата A" },
-            { id: "expert_2", name: "Эксперт B", text: "Победа кандидата B" }
-        ]
-    },
-    {
-        id: 2,
-        title: "Санкции против Y",
-        description: "Будут ли введены новые санкции против страны Y?",
-        experts: [
-            { id: "expert_1", name: "Эксперт A", text: "Санкции введут" },
-            { id: "expert_2", name: "Эксперт B", text: "Санкций не будет" }
-        ]
-    }
+    { id: 1, title: "Выборы в X", experts: [{id:"expert_1",name:"A"},{id:"expert_2",name:"B"}] },
+    { id: 2, title: "Санкции против Y", experts: [{id:"expert_1",name:"A"},{id:"expert_2",name:"B"}] }
 ];
 
-const casesListEl = document.getElementById("cases-list");
-const caseViewEl = document.getElementById("case-view");
-const modalEl = document.getElementById("customModal");
-const customTextEl = document.getElementById("customText");
-
+const listEl = document.getElementById("cases-list");
+const viewEl = document.getElementById("case-view");
 let currentCaseId = null;
 
 function renderCases() {
-    casesListEl.innerHTML = "";
-    cases.forEach(c => {
+    listEl.innerHTML = "";
+    cases.forEach(c=>{
         const div = document.createElement("div");
-        div.className = "case";
-        div.innerHTML = `
-            <h2>📊 ${c.title}</h2>
-            <p>${c.description}</p>
-            <button class="primary" onclick="openCase(${c.id})">▶️ Участвовать</button>
-        `;
-        casesListEl.appendChild(div);
+        div.innerHTML = `<h2>${c.title}</h2><button onclick="openCase(${c.id})">▶️ Участвовать</button>`;
+        listEl.appendChild(div);
     });
 }
-
-function openCase(caseId) {
-    const c = cases.find(x => x.id === caseId);
-    if (!c) return;
-
-    casesListEl.style.display = "none";
-    caseViewEl.style.display = "block";
-
-    caseViewEl.innerHTML = `
-        <button class="back" onclick="backToCases()">← Назад</button>
-        <div class="case">
-            <h2>${c.title}</h2>
-            <p>${c.description}</p>
-            ${c.experts.map(e => `
-                <button class="primary" onclick="vote(${c.id}, '${e.id}')">
-                    ${e.name}<br>
-                    <small>${e.text}</small>
-                </button>
-            `).join("")}
-            <button class="custom" onclick="customVote(${c.id})">✍️ Свой прогноз (1 токен)</button>
-        </div>
-    `;
+function openCase(id){
+    const c = cases.find(x=>x.id===id);
+    listEl.style.display="none";
+    viewEl.style.display="block";
+    currentCaseId=id;
+    viewEl.innerHTML=c.experts.map(e=>`<button onclick="vote('${e.id}')">${e.name}</button>`).join("")+`<button onclick="customVote()">Свой прогноз</button>`;
 }
-
-function backToCases() {
-    caseViewEl.style.display = "none";
-    casesListEl.style.display = "block";
+function vote(expert){
+    tg.sendData(JSON.stringify({case_id:currentCaseId,choice:expert,tokens:tokens}));
+    alert("Голос отправлен!");
 }
-
-// Голос за эксперта
-function vote(caseId, choice) {
-    tg.sendData(JSON.stringify({ case_id: caseId, choice: choice, tokens: tokens }));
-    alert("✅ Голос принят!");
+function customVote(){
+    if(tokens<=0){alert("Недостаточно токенов"); return;}
+    const text = prompt("Ваш прогноз:");
+    if(text && text.length>=3){
+        tokens--; document.getElementById("tokens").innerText=tokens;
+        tg.sendData(JSON.stringify({case_id:currentCaseId,choice:"custom",text:text,tokens:tokens}));
+        alert("Прогноз отправлен!");
+    }
 }
-
-// Свой прогноз
-function customVote(caseId) {
-    if (tokens <= 0) { alert("❌ Недостаточно токенов"); return; }
-    currentCaseId = caseId;
-    customTextEl.value = "";
-    modalEl.style.display = "flex";
-}
-
-function closeModal() {
-    modalEl.style.display = "none";
-}
-
-function submitCustom() {
-    const text = customTextEl.value.trim();
-    if (text.length < 3) { alert("⚠️ Прогноз слишком короткий"); return; }
-
-    if (!confirm(`✍️ Свой прогноз стоит 1 токен\n💎 У вас: ${tokens}\nПродолжить?`)) return;
-
-    tokens -= 1;
-    tokensEl.innerText = tokens;
-
-    tg.sendData(JSON.stringify({
-        case_id: currentCaseId,
-        choice: "custom",
-        text: text,
-        tokens: tokens  // передаём актуальный баланс
-    }));
-
-    closeModal();
-    alert("✅ Прогноз отправлен!");
-}
-
 renderCases();
+
 
 
 
