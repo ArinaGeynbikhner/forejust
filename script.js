@@ -43,7 +43,6 @@ const casesListEl = document.getElementById("cases-list");
 const caseViewEl = document.getElementById("case-view");
 const modalEl = document.getElementById("customModal");
 const customTextEl = document.getElementById("customText");
-
 let currentCaseId = null;
 
 // --------------------
@@ -69,13 +68,10 @@ function renderCases() {
 function openCase(caseId) {
     const c = cases.find(x => x.id === caseId);
     if (!c) return;
-
     currentCaseId = caseId;
     casesListEl.style.display = "none";
     caseViewEl.style.display = "block";
-
     caseViewEl.innerHTML = `<button class="back" onclick="backToCases()">← Назад</button>`;
-
     c.experts.forEach(e => {
         const btn = document.createElement("button");
         btn.className = "primary";
@@ -83,7 +79,6 @@ function openCase(caseId) {
         btn.onclick = () => vote(caseId, e.id);
         caseViewEl.appendChild(btn);
     });
-
     const customBtn = document.createElement("button");
     customBtn.className = "custom";
     customBtn.textContent = "✍️ Свой прогноз (1 токен)";
@@ -105,10 +100,10 @@ function backToCases() {
 function vote(caseId, choice) {
     tg.sendData(JSON.stringify({
         case_id: caseId,
-        choice: choice,
-        tokens: tokens // синхронизация токенов
+        choice: choice
     }));
     alert("✅ Ваш голос принят!");
+    tg.close();  // Закрываем мини-app после отправки
 }
 
 // --------------------
@@ -135,23 +130,17 @@ function submitCustom() {
         alert("⚠️ Прогноз слишком короткий (минимум 3 символа)");
         return;
     }
-
-    const ok = confirm(`✍️ Свой прогноз стоит 1 токен\n💎 У вас: ${tokens}\nПродолжить?`);
+    const ok = confirm(`✍️ Свой прогноз стоит 1 токен\nПродолжить?`);
     if (!ok) return;
-
-    // уменьшаем токен и отправляем в бот
-    tokens -= 1;
-    tokensEl.innerText = tokens;
 
     tg.sendData(JSON.stringify({
         case_id: currentCaseId,
         choice: "custom",
-        text: text,
-        tokens: tokens // передаем обновленный баланс
+        text: text
     }));
-
     closeModal();
     alert("✅ Прогноз отправлен!");
+    tg.close();  // Закрываем мини-app после отправки
 }
 
 // --------------------
