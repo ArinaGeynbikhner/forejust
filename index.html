@@ -1,22 +1,33 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>Битва экспертов</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <title>Битва экспертов</title>
+
+    <!-- Telegram WebApp API -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<h1>Битва экспертов</h1>
 
-<div class="case-card" id="case1">
-    <h2>Выборы в X</h2>
-    <p>Эксперт A: победит партия A</p>
-    <p>Эксперт B: победит партия B</p>
-    <button onclick="vote(1,'a')">🅰️ Эксперт A</button>
-    <button onclick="vote(1,'b')">🅱️ Эксперт B</button>
-    <button onclick="custom(1)">➕ Свой прогноз</button>
-</div>
+<div class="app">
 
-<script src="script.js"></script>
-</body>
-</html>
+    <header class="header">
+        <h1>🔮 Битва экспертов</h1>
+        <div class="tokens">
+            💎 Токены: <span id="tokens">0</span>
+        </div>
+    </header>
+
+    <section class="case">
+        <h2>📊 Кейс недели</h2>
+        <p class="case-title">
+            Событие: <strong>Выборы в X</strong>
+        </p>
+
+        <div class="experts">
+            <button onclick="vote(1, 'expert_1')">
+
