@@ -42,6 +42,10 @@ const cases = [
 // --------------------
 const casesListEl = document.getElementById("cases-list");
 const caseViewEl = document.getElementById("case-view");
+const modalEl = document.getElementById("customModal");
+const customTextEl = document.getElementById("customText");
+
+let currentCaseId = null; // текущий кейс для модалки
 
 // --------------------
 // РЕНДЕР СПИСКА КЕЙСОВ
@@ -117,7 +121,7 @@ function vote(caseId, choice) {
 }
 
 // --------------------
-// СВОЙ ПРОГНОЗ (СПИСАНИЕ ТОКЕНА)
+// СВОЙ ПРОГНОЗ (МОДАЛКА, СПИСАНИЕ ТОКЕНА)
 // --------------------
 function customVote(caseId) {
     if (tokens <= 0) {
@@ -125,34 +129,39 @@ function customVote(caseId) {
         return;
     }
 
-    // Спрашиваем текст прогноза
-    const text = prompt("Введите свой прогноз:");
+    currentCaseId = caseId;
+    customTextEl.value = "";
+    modalEl.style.display = "flex";
+}
 
-    if (!text || text.trim().length < 3) {
+function closeModal() {
+    modalEl.style.display = "none";
+}
+
+function submitCustom() {
+    const text = customTextEl.value.trim();
+
+    if (text.length < 3) {
         alert("⚠️ Прогноз слишком короткий");
         return;
     }
 
-    // Подтверждение списания токена
     const ok = confirm(
-        `✍️ Свой прогноз стоит 1 токен\n\n` +
-        `💎 У вас: ${tokens}\n\n` +
-        `Продолжить?`
+        `✍️ Свой прогноз стоит 1 токен\n💎 У вас: ${tokens}\nПродолжить?`
     );
 
     if (!ok) return;
 
-    // Отправка данных в бот
     tg.sendData(JSON.stringify({
-        case_id: caseId,
+        case_id: currentCaseId,
         choice: "custom",
         text: text
     }));
 
-    // Списание токена
     tokens -= 1;
     tokensEl.innerText = tokens;
 
+    closeModal();
     alert("✅ Прогноз отправлен!");
 }
 
@@ -160,3 +169,4 @@ function customVote(caseId) {
 // ИНИЦИАЛИЗАЦИЯ
 // --------------------
 renderCases();
+
