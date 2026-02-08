@@ -3,18 +3,12 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-// --------------------
 // Получаем токены из URL
-// --------------------
 let tokens = parseInt(new URLSearchParams(window.location.search).get("tokens")) || 0;
-
-// DOM элемент для отображения токенов
 const tokensEl = document.getElementById("tokens");
 tokensEl.innerText = tokens;
 
-// --------------------
 // Данные кейсов
-// --------------------
 const cases = [
     {
         id: 1,
@@ -36,18 +30,12 @@ const cases = [
     }
 ];
 
-// --------------------
-// DOM элементы
-// --------------------
 const casesListEl = document.getElementById("cases-list");
 const caseViewEl = document.getElementById("case-view");
 const modalEl = document.getElementById("customModal");
 const customTextEl = document.getElementById("customText");
 let currentCaseId = null;
 
-// --------------------
-// Рендерим список кейсов
-// --------------------
 function renderCases() {
     casesListEl.innerHTML = "";
     cases.forEach(c => {
@@ -62,9 +50,6 @@ function renderCases() {
     });
 }
 
-// --------------------
-// Открытие кейса
-// --------------------
 function openCase(caseId) {
     const c = cases.find(x => x.id === caseId);
     if (!c) return;
@@ -86,29 +71,22 @@ function openCase(caseId) {
     caseViewEl.appendChild(customBtn);
 }
 
-// --------------------
-// Назад к списку кейсов
-// --------------------
 function backToCases() {
     caseViewEl.style.display = "none";
     casesListEl.style.display = "block";
 }
 
-// --------------------
 // Голос за эксперта
-// --------------------
 function vote(caseId, choice) {
     tg.sendData(JSON.stringify({
         case_id: caseId,
         choice: choice
     }));
-    alert("✅ Ваш голос принят!");
-    tg.close();  // Закрываем мини-app после отправки
+    alert("✅ Ваш голос принят!\n\nВернитесь в чат, чтобы увидеть обновлённый баланс.");
+    // tg.close() УБРАЛИ — теперь бот сам пришлёт сообщение
 }
 
-// --------------------
 // Свой прогноз
-// --------------------
 function customVote(caseId) {
     if (tokens <= 0) {
         alert("❌ Недостаточно токенов");
@@ -118,12 +96,10 @@ function customVote(caseId) {
     customTextEl.value = "";
 }
 
-// Закрытие модалки
 function closeModal() {
     modalEl.style.display = "none";
 }
 
-// Отправка своего прогноза
 function submitCustom() {
     const text = customTextEl.value.trim();
     if (text.length < 3) {
@@ -139,13 +115,11 @@ function submitCustom() {
         text: text
     }));
     closeModal();
-    alert("✅ Прогноз отправлен!");
-    tg.close();  // Закрываем мини-app после отправки
+    alert("✅ Прогноз отправлен!\n\nВернитесь в чат, чтобы увидеть обновлённый баланс.");
+    // tg.close() УБРАЛИ
 }
 
-// --------------------
 // Инициализация
-// --------------------
 renderCases();
 
 
