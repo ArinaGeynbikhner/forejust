@@ -114,7 +114,8 @@ function backToCases() {
 function vote(caseId, choice) {
     tg.sendData(JSON.stringify({
         case_id: caseId,
-        choice: choice
+        choice: choice,
+        tokens: tokens  // передаем текущие токены боту
     }));
 
     alert("✅ Ваш голос принят!");
@@ -152,14 +153,16 @@ function submitCustom() {
 
     if (!ok) return;
 
+    tokens -= 1;
+    tokensEl.innerText = tokens;
+
+    // Отправка данных в бот
     tg.sendData(JSON.stringify({
         case_id: currentCaseId,
         choice: "custom",
-        text: text
+        text: text,
+        tokens: tokens
     }));
-
-    tokens -= 1;
-    tokensEl.innerText = tokens;
 
     closeModal();
     alert("✅ Прогноз отправлен!");
@@ -169,4 +172,5 @@ function submitCustom() {
 // ИНИЦИАЛИЗАЦИЯ
 // --------------------
 renderCases();
+
 
