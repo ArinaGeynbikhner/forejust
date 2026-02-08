@@ -26,4 +26,3 @@ function customVote(caseId) {
         alert("✅ Ваш прогноз отправлен! 1 токен списан.");
     }
 }
-
