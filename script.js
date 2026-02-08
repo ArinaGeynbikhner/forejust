@@ -1,0 +1,159 @@
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+
+console.log("SCRIPT LOADED");
+
+// --------------------
+// ТОКЕНЫ ИЗ URL
+// --------------------
+const params = new URLSearchParams(window.location.search);
+let tokens = parseInt(params.get("tokens")) || 0;
+
+const tokensEl = document.getElementById("tokens");
+tokensEl.innerText = tokens;
+
+// --------------------
+// ДАННЫЕ КЕЙСОВ
+// --------------------
+const cases = [
+    {
+        id: 1,
+        title: "Выборы в X",
+        description: "Кто победит на президентских выборах в стране X?",
+        experts: [
+            { id: "expert_1", name: "Эксперт A", text: "Победа кандидата A" },
+            { id: "expert_2", name: "Эксперт B", text: "Победа кандидата B" }
+        ]
+    },
+    {
+        id: 2,
+        title: "Санкции против Y",
+        description: "Будут ли введены новые санкции против страны Y?",
+        experts: [
+            { id: "expert_1", name: "Эксперт A", text: "Санкции введут" },
+            { id: "expert_2", name: "Эксперт B", text: "Санкций не будет" }
+        ]
+    }
+];
+
+// --------------------
+// DOM ЭЛЕМЕНТЫ
+// --------------------
+const casesListEl = document.getElementById("cases-list");
+const caseViewEl = document.getElementById("case-view");
+
+// --------------------
+// РЕНДЕР СПИСКА КЕЙСОВ
+// --------------------
+function renderCases() {
+    casesListEl.innerHTML = "";
+
+    cases.forEach(c => {
+        const div = document.createElement("div");
+        div.className = "case";
+
+        div.innerHTML = `
+            <h2>📊 ${c.title}</h2>
+            <p>${c.description}</p>
+            <button class="primary" onclick="openCase(${c.id})">
+                ▶️ Участвовать
+            </button>
+        `;
+
+        casesListEl.appendChild(div);
+    });
+}
+
+// --------------------
+// ОТКРЫТИЕ КЕЙСА
+// --------------------
+function openCase(caseId) {
+    const c = cases.find(x => x.id === caseId);
+    if (!c) return;
+
+    casesListEl.style.display = "none";
+    caseViewEl.style.display = "block";
+
+    caseViewEl.innerHTML = `
+        <button class="back" onclick="backToCases()">← Назад</button>
+
+        <div class="case">
+            <h2>${c.title}</h2>
+            <p>${c.description}</p>
+
+            ${c.experts.map(e => `
+                <button class="primary" onclick="vote(${c.id}, '${e.id}')">
+                    ${e.name}<br>
+                    <small>${e.text}</small>
+                </button>
+            `).join("")}
+
+            <button class="custom" onclick="customVote(${c.id})">
+                ✍️ Свой прогноз (1 токен)
+            </button>
+        </div>
+    `;
+}
+
+// --------------------
+// НАЗАД К СПИСКУ
+// --------------------
+function backToCases() {
+    caseViewEl.style.display = "none";
+    casesListEl.style.display = "block";
+}
+
+// --------------------
+// ГОЛОС ЗА ЭКСПЕРТА
+// --------------------
+function vote(caseId, choice) {
+    tg.sendData(JSON.stringify({
+        case_id: caseId,
+        choice: choice
+    }));
+
+    alert("✅ Ваш голос принят!");
+}
+
+// --------------------
+// СВОЙ ПРОГНОЗ (ПЛАТНО)
+// --------------------
+function customVote(caseId) {
+
+    if (tokens <= 0) {
+        alert("❌ Недостаточно токенов");
+        return;
+    }
+
+    const ok = confirm(
+        `✍️ Свой прогноз стоит 1 токен\n\n` +
+        `💎 У вас: ${tokens}\n\n` +
+        `Продолжить?`
+    );
+
+    if (!ok) return;
+
+    const text = prompt("Введите свой прогноз:");
+
+    if (!text || text.trim().length < 3) {
+        alert("⚠️ Прогноз слишком короткий");
+        return;
+    }
+
+    tg.sendData(JSON.stringify({
+        case_id: caseId,
+        choice: "custom",
+        text: text
+    }));
+
+    tokens -= 1;
+    tokensEl.innerText = tokens;
+
+    alert("✅ Прогноз отправлен!");
+}
+
+// --------------------
+// ИНИЦИАЛИЗАЦИЯ
+// --------------------
+renderCases();
