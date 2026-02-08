@@ -1,8 +1,7 @@
+// Telegram WebApp API
 const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
-
-console.log("SCRIPT LOADED");
 
 // --------------------
 // ТОКЕНЫ ИЗ URL
@@ -10,6 +9,7 @@ console.log("SCRIPT LOADED");
 const params = new URLSearchParams(window.location.search);
 let tokens = parseInt(params.get("tokens")) || 0;
 
+// DOM элемент для отображения токенов
 const tokensEl = document.getElementById("tokens");
 tokensEl.innerText = tokens;
 
@@ -117,7 +117,7 @@ function vote(caseId, choice) {
 }
 
 // --------------------
-// СВОЙ ПРОГНОЗ (ПЛАТНО)
+// СВОЙ ПРОГНОЗ (СПИСАНИЕ ТОКЕНА)
 // --------------------
 function customVote(caseId) {
 
@@ -147,6 +147,7 @@ function customVote(caseId) {
         text: text
     }));
 
+    // Списание токена
     tokens -= 1;
     tokensEl.innerText = tokens;
 
