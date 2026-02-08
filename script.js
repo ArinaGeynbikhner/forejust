@@ -1,4 +1,3 @@
-// Telegram WebApp API
 const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
@@ -9,7 +8,6 @@ tg.expand();
 const params = new URLSearchParams(window.location.search);
 let tokens = parseInt(params.get("tokens")) || 0;
 
-// DOM элемент для отображения токенов
 const tokensEl = document.getElementById("tokens");
 tokensEl.innerText = tokens;
 
@@ -37,41 +35,27 @@ const cases = [
     }
 ];
 
-// --------------------
-// DOM ЭЛЕМЕНТЫ
-// --------------------
 const casesListEl = document.getElementById("cases-list");
 const caseViewEl = document.getElementById("case-view");
 const modalEl = document.getElementById("customModal");
 const customTextEl = document.getElementById("customText");
 
-let currentCaseId = null; // текущий кейс для модалки
+let currentCaseId = null;
 
-// --------------------
-// РЕНДЕР СПИСКА КЕЙСОВ
-// --------------------
 function renderCases() {
     casesListEl.innerHTML = "";
-
     cases.forEach(c => {
         const div = document.createElement("div");
         div.className = "case";
-
         div.innerHTML = `
             <h2>📊 ${c.title}</h2>
             <p>${c.description}</p>
-            <button class="primary" onclick="openCase(${c.id})">
-                ▶️ Участвовать
-            </button>
+            <button class="primary" onclick="openCase(${c.id})">▶️ Участвовать</button>
         `;
-
         casesListEl.appendChild(div);
     });
 }
 
-// --------------------
-// ОТКРЫТИЕ КЕЙСА
-// --------------------
 function openCase(caseId) {
     const c = cases.find(x => x.id === caseId);
     if (!c) return;
@@ -81,55 +65,34 @@ function openCase(caseId) {
 
     caseViewEl.innerHTML = `
         <button class="back" onclick="backToCases()">← Назад</button>
-
         <div class="case">
             <h2>${c.title}</h2>
             <p>${c.description}</p>
-
             ${c.experts.map(e => `
                 <button class="primary" onclick="vote(${c.id}, '${e.id}')">
                     ${e.name}<br>
                     <small>${e.text}</small>
                 </button>
             `).join("")}
-
-            <button class="custom" onclick="customVote(${c.id})">
-                ✍️ Свой прогноз (1 токен)
-            </button>
+            <button class="custom" onclick="customVote(${c.id})">✍️ Свой прогноз (1 токен)</button>
         </div>
     `;
 }
 
-// --------------------
-// НАЗАД К СПИСКУ
-// --------------------
 function backToCases() {
     caseViewEl.style.display = "none";
     casesListEl.style.display = "block";
 }
 
-// --------------------
-// ГОЛОС ЗА ЭКСПЕРТА
-// --------------------
+// Голос за эксперта
 function vote(caseId, choice) {
-    tg.sendData(JSON.stringify({
-        case_id: caseId,
-        choice: choice,
-        tokens: tokens  // передаем текущие токены боту
-    }));
-
-    alert("✅ Ваш голос принят!");
+    tg.sendData(JSON.stringify({ case_id: caseId, choice: choice, tokens: tokens }));
+    alert("✅ Голос принят!");
 }
 
-// --------------------
-// СВОЙ ПРОГНОЗ (МОДАЛКА, СПИСАНИЕ ТОКЕНА)
-// --------------------
+// Свой прогноз
 function customVote(caseId) {
-    if (tokens <= 0) {
-        alert("❌ Недостаточно токенов");
-        return;
-    }
-
+    if (tokens <= 0) { alert("❌ Недостаточно токенов"); return; }
     currentCaseId = caseId;
     customTextEl.value = "";
     modalEl.style.display = "flex";
@@ -141,36 +104,25 @@ function closeModal() {
 
 function submitCustom() {
     const text = customTextEl.value.trim();
+    if (text.length < 3) { alert("⚠️ Прогноз слишком короткий"); return; }
 
-    if (text.length < 3) {
-        alert("⚠️ Прогноз слишком короткий");
-        return;
-    }
-
-    const ok = confirm(
-        `✍️ Свой прогноз стоит 1 токен\n💎 У вас: ${tokens}\nПродолжить?`
-    );
-
-    if (!ok) return;
+    if (!confirm(`✍️ Свой прогноз стоит 1 токен\n💎 У вас: ${tokens}\nПродолжить?`)) return;
 
     tokens -= 1;
     tokensEl.innerText = tokens;
 
-    // Отправка данных в бот
     tg.sendData(JSON.stringify({
         case_id: currentCaseId,
         choice: "custom",
         text: text,
-        tokens: tokens
+        tokens: tokens  // передаём актуальный баланс
     }));
 
     closeModal();
     alert("✅ Прогноз отправлен!");
 }
 
-// --------------------
-// ИНИЦИАЛИЗАЦИЯ
-// --------------------
 renderCases();
+
 
 
