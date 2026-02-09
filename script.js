@@ -1,110 +1,106 @@
-// Инициализация Telegram Web App
-const tg = window.Telegram.WebApp;
-tg.ready();
+let tg = window.Telegram.WebApp;
 tg.expand();
 
+// 1. Извлекаем данные из URL
 const urlParams = new URLSearchParams(window.location.search);
-let tokens = parseInt(urlParams.get("tokens")) || 0;
-const tokensEl = document.getElementById("tokens");
-tokensEl.innerText = tokens;
+const userTokens = parseInt(urlParams.get('tokens') || '0');
+const casesData = JSON.parse(urlParams.get('cases') || '[]');
 
-let cases = [];
-const casesParam = urlParams.get("cases");
-if (casesParam) {
-    try {
-        cases = JSON.parse(casesParam).filter(c => c.is_active !== false && c.is_active !== 0);
-    } catch (e) {
-        console.error("Ошибка парсинга кейсов из URL:", e);
-        cases = [];
-    }
-}
+// Элементы страницы
+const tokensSpan = document.getElementById('tokens');
+const casesList = document.getElementById('cases-list');
+const caseView = document.getElementById('case-view');
+const customModal = document.getElementById('customModal');
+const customText = document.getElementById('customText');
 
-const casesListEl = document.getElementById("cases-list");
-const caseViewEl = document.getElementById("case-view");
-const modalEl = document.getElementById("customModal");
-const customTextEl = document.getElementById("customText");
+// Состояние
 let currentCaseId = null;
 
-function renderCases() {
-    casesListEl.innerHTML = "";
-    if (cases.length === 0) {
-        casesListEl.innerHTML = '<p>Пока нет активных кейсов</p>';
-        return;
-    }
-    cases.forEach(c => {
-        const div = document.createElement("div");
-        div.className = "case";
-        div.innerHTML = `
-            <h2>📊 ${c.title}</h2>
-            <p>${c.description}</p>
-            <button class="primary" onclick="openCase(${c.id})">▶️ Участвовать</button>
+// Устанавливаем баланс
+tokensSpan.innerText = userTokens;
+
+// 2. Отрисовка списка кейсов
+function renderList() {
+    casesList.innerHTML = '';
+    casesData.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'case-card'; // Проверь, что в style.css есть такой класс
+        card.innerHTML = `
+            <h2>${item.title}</h2>
+            <p>${item.description}</p>
+            <button class="main-button" onclick="openCase(${item.id})">Участвовать</button>
         `;
-        casesListEl.appendChild(div);
+        casesList.appendChild(card);
     });
 }
 
-function openCase(caseId) {
-    const c = cases.find(x => x.id === caseId);
+// 3. Открытие конкретного кейса
+window.openCase = function(id) {
+    const c = casesData.find(item => item.id === id);
     if (!c) return;
 
-    currentCaseId = caseId;
-    casesListEl.style.display = "none";
-    caseViewEl.style.display = "block";
+    currentCaseId = id;
+    casesList.style.display = 'none';
+    caseView.style.display = 'block';
 
-    caseViewEl.innerHTML = `<button class="back" onclick="backToCases()">← Назад</button>`;
+    caseView.innerHTML = `
+        <button class="back-link" onclick="backToList()">← Назад к списку</button>
+        <div class="case-full">
+            <h2>${c.title}</h2>
+            <p>${c.description}</p>
+            
+            <div class="experts-container">
+                <div class="expert-card" onclick="sendVote('expert_1')">
+                    <strong>${c.experts[0].name}</strong>
+                    <p>${c.experts[0].text}</p>
+                </div>
+                <div class="expert-card" onclick="sendVote('expert_2')">
+                    <strong>${c.experts[1].name}</strong>
+                    <p>${c.experts[1].text}</p>
+                </div>
+            </div>
 
-    c.experts.forEach(e => {
-        const btn = document.createElement("button");
-        btn.className = "primary";
-        btn.innerHTML = `${e.name}<br><small>${e.text}</small>`;
-        btn.onclick = () => vote(caseId, e.id);
-        caseViewEl.appendChild(btn);
-    });
+            <button class="custom-btn" onclick="openModal()">✍️ Написать свой прогноз (-1 💎)</button>
+        </div>
+    `;
+};
 
-    const customBtn = document.createElement("button");
-    customBtn.className = "custom";
-    customBtn.textContent = "✍️ Свой прогноз (1 токен)";
-    customBtn.onclick = () => customVote(caseId);
-    caseViewEl.appendChild(customBtn);
-}
+// 4. Функции навигации и голосования
+window.backToList = function() {
+    caseView.style.display = 'none';
+    casesList.style.display = 'block';
+};
 
-function backToCases() {
-    caseViewEl.style.display = "none";
-    casesListEl.style.display = "block";
-}
+window.sendVote = function(choice) {
+    const data = {
+        case_id: currentCaseId,
+        choice: choice
+    };
+    tg.sendData(JSON.stringify(data));
+};
 
-function vote(caseId, choice) {
-    tg.sendData(JSON.stringify({ case_id: caseId, choice: choice }));
-    alert("✅ Ваш голос принят!\n\nВернитесь в чат, чтобы увидеть обновлённый баланс.");
-}
+// 5. Работа с модальным окном
+window.openModal = function() {
+    customModal.style.display = 'flex';
+};
 
-function customVote(caseId) {
-    if (tokens <= 0) {
-        alert("❌ Недостаточно токенов");
-        return;
-    }
-    modalEl.style.display = "flex";
-    customTextEl.value = "";
-}
+window.closeModal = function() {
+    customModal.style.display = 'none';
+    customText.value = '';
+};
 
-function closeModal() {
-    modalEl.style.display = "none";
-}
+window.submitCustom = function() {
+    const text = customText.value.trim();
+    if (!text) return alert("Введите текст прогноза!");
 
-function submitCustom() {
-    const text = customTextEl.value.trim();
-    if (text.length < 3) {
-        alert("⚠️ Прогноз слишком короткий (минимум 3 символа)");
-        return;
-    }
-
-    const ok = confirm(`✍️ Свой прогноз стоит 1 токен\nПродолжить?`);
-    if (!ok) return;
-
-    tg.sendData(JSON.stringify({ case_id: currentCaseId, choice: "custom", text: text }));
+    const data = {
+        case_id: currentCaseId,
+        choice: 'custom',
+        text: text
+    };
+    tg.sendData(JSON.stringify(data));
     closeModal();
-    alert("✅ Прогноз отправлен!\n\nВернитесь в чат, чтобы увидеть обновлённый баланс.");
-}
+};
 
-renderCases();
-
+// Запуск отрисовки
+renderList();
