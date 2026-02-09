@@ -7,7 +7,7 @@ document.getElementById("tokens").innerText = tokens;
 
 let cases = [];
 
-fetch("http://127.0.0.1:8000/cases")
+fetch("http://127.0.0.1:8000/cases") 
   .then(res => res.json())
   .then(data => {
     cases = data;
