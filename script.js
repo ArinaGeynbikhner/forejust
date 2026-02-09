@@ -9,7 +9,7 @@ const tokensEl = document.getElementById("tokens");
 tokensEl.innerText = tokens;
 
 // API URL для кейсов (для теста localhost, в прод — твой сервер)
-const API_URL = 'https://kswcl-185-68-93-236.a.free.pinggy.link/cases';
+const API_URL = '  https://zczqg-185-68-93-236.a.free.pinggy.link';
 // DOM элементы
 const casesListEl = document.getElementById("cases-list");
 const caseViewEl = document.getElementById("case-view");
