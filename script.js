@@ -7,7 +7,7 @@ document.getElementById("tokens").innerText = tokens;
 
 let cases = [];
 
-fetch("") 
+fetch("nenefiu") 
   .then(res => res.json())
   .then(data => {
     cases = data;
