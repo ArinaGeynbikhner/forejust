@@ -70,7 +70,7 @@ h1 {
     border: 1px solid #e0e0e0;
     border-radius: 12px;
     padding: 18px;
-    margin-bottom: 10px;
+    gap: 10px
     width: 100%;
     box-sizing: border-box;
     cursor: pointer;
@@ -92,7 +92,7 @@ h1 {
     font-weight: 600;
     cursor: pointer;
     box-sizing: border-box;
-    margin-top: -10px; /* Отступ от экспертов */
+    margin-top: 10px; /* Отступ от экспертов */
     box-shadow: 0 4px 10px rgba(0, 136, 204, 0.2);
 }
 
