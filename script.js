@@ -3,42 +3,45 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-// Получаем токены из URL (передаёт бот)
+// Получаем токены из URL (бот передаёт ?tokens=...)
 let tokens = parseInt(new URLSearchParams(window.location.search).get("tokens")) || 0;
 const tokensEl = document.getElementById("tokens");
 tokensEl.innerText = tokens;
 
-// URL к файлу cases.json на GitHub Pages
-const CASES_JSON_URL = "https://arinageynbikhner.github.io/forejust/cases.json";
+// Адрес файла cases.json на GitHub Pages
+// Важно: это относительный путь — работает, когда мини-апп открыт с твоего домена
+const CASES_JSON_URL = "/cases.json";  // или полный: "https://arinageynbikhner.github.io/forejust/cases.json"
 
-// Переменная для хранения кейсов
+// Переменная для кейсов
 let cases = [];
 
-// DOM элементы
+// DOM-элементы
 const casesListEl = document.getElementById("cases-list");
 const caseViewEl = document.getElementById("case-view");
 const modalEl = document.getElementById("customModal");
 const customTextEl = document.getElementById("customText");
 let currentCaseId = null;
 
-// Загрузка кейсов из JSON-файла
+// Загрузка кейсов из JSON
 async function loadCases() {
     try {
         const response = await fetch(CASES_JSON_URL);
         if (!response.ok) {
-            throw new Error(`Ошибка HTTP: ${response.status}`);
+            throw new Error(`HTTP ошибка ${response.status}`);
         }
         const data = await response.json();
-        // Фильтруем только активные кейсы
-        cases = data.filter(c => c.is_active === true);
+        
+        // фильтруем только активные кейсы
+        cases = data.filter(c => c.is_active !== false && c.is_active !== 0);
+        
         renderCases();
     } catch (error) {
-        console.error('Ошибка загрузки кейсов:', error);
+        console.error("Ошибка при загрузке кейсов:", error);
         casesListEl.innerHTML = '<p>Ошибка загрузки кейсов. Попробуйте позже.</p>';
     }
 }
 
-// Рендерим список кейсов
+// Отрисовка списка кейсов
 function renderCases() {
     casesListEl.innerHTML = "";
     
@@ -59,7 +62,7 @@ function renderCases() {
     });
 }
 
-// Открытие конкретного кейса
+// Открытие кейса
 function openCase(caseId) {
     const c = cases.find(x => x.id === caseId);
     if (!c) return;
@@ -85,7 +88,6 @@ function openCase(caseId) {
     caseViewEl.appendChild(customBtn);
 }
 
-// Возврат к списку
 function backToCases() {
     caseViewEl.style.display = "none";
     casesListEl.style.display = "block";
@@ -110,12 +112,10 @@ function customVote(caseId) {
     customTextEl.value = "";
 }
 
-// Закрытие модалки
 function closeModal() {
     modalEl.style.display = "none";
 }
 
-// Отправка своего прогноза
 function submitCustom() {
     const text = customTextEl.value.trim();
     if (text.length < 3) {
@@ -136,7 +136,7 @@ function submitCustom() {
     alert("✅ Прогноз отправлен!\n\nВернитесь в чат, чтобы увидеть обновлённый баланс.");
 }
 
-// Запускаем загрузку кейсов при старте
+// Запуск при загрузке мини-приложения
 loadCases();
 
 
