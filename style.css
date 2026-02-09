@@ -62,7 +62,7 @@ h1 {
 .case-full {
     display: flex;
     flex-direction: column;
-    gap: 30px; /* Расстояние между карточками экспертов */
+    gap: 15px; /* Расстояние между карточками экспертов */
 }
 
 .expert-card {
