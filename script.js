@@ -7,7 +7,7 @@ document.getElementById("tokens").innerText = tokens;
 
 let cases = [];
 
-fetch("nenefiu") 
+fetch("http://127.0.0.1:8000/cases")
   .then(res => res.json())
   .then(data => {
     cases = data;
@@ -60,6 +60,19 @@ function custom(caseId) {
     text
   }));
 }
+
+fetch(API_URL)
+  .then(r => r.json())
+  .then(data => {
+    cases = data;
+    renderCases();
+  })
+  .catch(err => {
+    console.error(err);
+    document.getElementById("cases-list").innerHTML =
+      "<p>⚠️ Не удалось загрузить кейсы</p>";
+  });
+
 
 
 
