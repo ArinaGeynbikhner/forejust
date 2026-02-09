@@ -8,28 +8,46 @@ let tokens = parseInt(new URLSearchParams(window.location.search).get("tokens"))
 const tokensEl = document.getElementById("tokens");
 tokensEl.innerText = tokens;
 
-// API URL для кейсов (для теста localhost, в прод — твой сервер)
-const API_URL = 'https://zczqg-185-68-93-236.a.free.pinggy.link';
+// Данные кейсов — редактируй здесь прямо в коде
+const cases = [
+    {
+        id: 1,
+        title: "Выборы в X",
+        description: "Кто победит на президентских выборах в стране X?",
+        experts: [
+            { id: "expert_1", name: "Эксперт A", text: "Победа кандидата A" },
+            { id: "expert_2", name: "Эксперт B", text: "Победа кандидата B" }
+        ]
+    },
+    {
+        id: 2,
+        title: "Санкции против Y",
+        description: "Будут ли введены новые санкции против страны Y?",
+        experts: [
+            { id: "expert_1", name: "Эксперт A", text: "Санкции введут" },
+            { id: "expert_2", name: "Эксперт B", text: "Санкций не будет" }
+        ]
+    },
+    // Добавляй новые кейсы сюда, например:
+    // {
+    //     id: 3,
+    //     title: "Новый кейс",
+    //     description: "О чём будет прогноз?",
+    //     experts: [
+    //         { id: "expert_1", name: "Эксперт X", text: "Мнение X" },
+    //         { id: "expert_2", name: "Эксперт Y", text: "Мнение Y" }
+    //     ]
+    // }
+];
+
 // DOM элементы
 const casesListEl = document.getElementById("cases-list");
 const caseViewEl = document.getElementById("case-view");
 const modalEl = document.getElementById("customModal");
 const customTextEl = document.getElementById("customText");
 let currentCaseId = null;
-let cases = [];  // Будет загружено из API
 
-// Загрузка кейсов из API)
-async function loadCases() {
-    try {
-        const response = await fetch(API_URL);
-        cases = await response.json();
-        renderCases();
-    } catch (error) {
-        console.error('Ошибка загрузки кейсов:', error);
-        casesListEl.innerHTML = '<p>Ошибка загрузки кейсов. Попробуйте позже.</p>';
-    }
-}
-
+// Рендерим список кейсов (без загрузки из интернета)
 function renderCases() {
     casesListEl.innerHTML = "";
     if (cases.length === 0) {
@@ -115,8 +133,8 @@ function submitCustom() {
     alert("✅ Прогноз отправлен!\n\nВернитесь в чат, чтобы увидеть обновлённый баланс.");
 }
 
-// Инициализация: загружаем кейсы
-loadCases();
+// Инициализация: сразу рендерим кейсы из кода
+renderCases();
 
 
 
