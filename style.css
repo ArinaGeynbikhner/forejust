@@ -87,3 +87,67 @@ h1 {
     background: #eef8ff;
     border-color: #0088cc;
 }
+
+/* Контейнер для выбора (экрана экспертов) */
+.case-full {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Расстояние между всеми элементами внутри */
+}
+
+/* Карточки экспертов (растягиваем) */
+.expert-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 15px;
+    width: 100%; /* На всю ширину */
+    box-sizing: border-box; /* Чтобы padding не раздувал ширину */
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+/* Поле ввода своего прогноза */
+#customText {
+    width: 100%;
+    min-height: 100px; /* Увеличиваем высоту */
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    background: #fff;
+    font-size: 16px; /* Чтобы iOS не зумил при фокусе */
+    font-family: inherit;
+    box-sizing: border-box;
+    resize: none; /* Запрещаем менять размер вручную, чтобы не ломать верстку */
+    margin-top: 10px;
+}
+
+/* Кнопка "Написать свой прогноз" и "Отправить" */
+.custom-btn, .modal-buttons button {
+    width: 100%; /* Растягиваем на всю ширину плашки */
+    background: #0088cc;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background 0.2s;
+}
+
+.custom-btn:active, .modal-buttons button:active {
+    background: #0077b5;
+}
+
+/* Стиль модального окна для мобилок */
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    width: 90%; /* Почти на весь экран на мобилке */
+    max-width: 400px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
