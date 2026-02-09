@@ -125,7 +125,7 @@ h1 {
 /* Кнопка "Написать свой прогноз" и "Отправить" */
 .custom-btn, .modal-buttons button {
     width: 100%; /* Растягиваем на всю ширину плашки */
-    background: #0088cc;
+    background: #0088cc83;
     color: white;
     border: none;
     padding: 15px;
