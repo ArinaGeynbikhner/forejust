@@ -19,7 +19,7 @@ const customTextEl = document.getElementById("customText");
 let currentCaseId = null;
 let cases = [];  // Будет загружено из API
 
-// Загрузка кейсов из API
+// Загрузка кейсов из API)
 async function loadCases() {
     try {
         const response = await fetch(API_URL);
