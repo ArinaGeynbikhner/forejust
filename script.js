@@ -1,22 +1,19 @@
 let tg = window.Telegram.WebApp;
 let currentCaseId = null;
 let selectedChoice = null;
+let currentBet = 1;
 
 tg.expand();
 
-// Получаем данные из URL
 const urlParams = new URLSearchParams(window.location.search);
-const tokens = urlParams.get('tokens') || 0;
-document.getElementById('tokenCount').innerText = tokens;
+const userTokens = parseInt(urlParams.get('tokens') || 0);
+document.getElementById('tokenCount').innerText = userTokens;
 
 const casesData = JSON.parse(decodeURIComponent(urlParams.get('cases') || "[]"));
 
-const caseList = document.getElementById('caseList');
-const caseView = document.getElementById('caseView');
-const modal = document.getElementById('modal');
-
 function renderCases() {
-    caseList.innerHTML = '';
+    const list = document.getElementById('caseList');
+    list.innerHTML = '';
     casesData.forEach(c => {
         const div = document.createElement('div');
         div.className = 'case-card';
@@ -25,71 +22,85 @@ function renderCases() {
             <p>${c.description}</p>
             <button onclick="openCase(${c.id})">Сделать прогноз</button>
         `;
-        caseList.appendChild(div);
+        list.appendChild(div);
     });
 }
 
 function openCase(id) {
     const c = casesData.find(item => item.id === id);
     currentCaseId = id;
-    caseList.classList.add('hidden');
-    caseView.classList.remove('hidden');
-    document.getElementById('mainTitle').innerText = "Выбор";
+    document.getElementById('caseList').classList.add('hidden');
+    const view = document.getElementById('caseView');
+    view.classList.remove('hidden');
+    document.getElementById('mainTitle').innerText = "Выбор мнения";
 
-    caseView.innerHTML = `
-        <div class="case-full">
-            <div class="expert-card" onclick="prepareVote('expert_1', '${c.experts[0].name}')">
-                <h3>${c.experts[0].name}</h3>
-                <p>${c.experts[0].text}</p>
-            </div>
-            <div class="expert-card" onclick="prepareVote('expert_2', '${c.experts[1].name}')">
-                <h3>${c.experts[1].name}</h3>
-                <p>${c.experts[1].text}</p>
-            </div>
-            <button class="custom-btn" onclick="prepareVote('custom', 'Свой вариант')">✍️ Написать свой прогноз</button>
-            <button class="custom-btn" style="background:#ccc" onclick="backToList()">⬅️ Назад</button>
+    view.innerHTML = `
+        <div class="expert-card" onclick="prepareVote('expert_1', '${c.experts[0].name}')">
+            <h3>${c.experts[0].name}</h3>
+            <p>${c.experts[0].text}</p>
         </div>
+        <div class="expert-card" onclick="prepareVote('expert_2', '${c.experts[1].name}')">
+            <h3>${c.experts[1].name}</h3>
+            <p>${c.experts[1].text}</p>
+        </div>
+        <button class="custom-btn" onclick="prepareVote('custom', 'Ваш собственный прогноз')">✍️ Написать свой вариант</button>
+        <p onclick="backToList()" style="text-align:center; color:#888; margin-top:20px; cursor:pointer;">⬅️ К списку кейсов</p>
     `;
+}
+
+function setBet(amount) {
+    currentBet = amount;
+    document.getElementById('betAmount').value = amount;
+    document.querySelectorAll('.bet-chip').forEach(btn => {
+        btn.classList.remove('active');
+        if (parseInt(btn.innerText) === amount) btn.classList.add('active');
+    });
 }
 
 function prepareVote(choice, title) {
     selectedChoice = choice;
     document.getElementById('modalTitle').innerText = title;
-    modal.classList.remove('hidden');
     
-    // Показываем текстовое поле только если выбор "custom"
+    const textArea = document.getElementById('customText');
+    // Показываем текстовое поле только для 'custom'
     if (choice === 'custom') {
-        document.getElementById('customText').classList.remove('hidden');
+        textArea.classList.remove('hidden');
     } else {
-        document.getElementById('customText').classList.add('hidden');
+        textArea.classList.add('hidden');
     }
+    
+    document.getElementById('modal').classList.remove('hidden');
 }
 
 document.getElementById('sendBtn').onclick = () => {
-    const bet = parseInt(document.getElementById('betAmount').value);
     const text = document.getElementById('customText').value;
 
-    if (bet < 1 || bet > parseInt(tokens)) {
-        tg.showAlert("Недостаточно токенов или неверная сумма!");
+    if (currentBet > userTokens) {
+        tg.showAlert("Недостаточно токенов!");
+        return;
+    }
+
+    if (selectedChoice === 'custom' && text.trim().length < 3) {
+        tg.showAlert("Пожалуйста, напишите ваш прогноз.");
         return;
     }
 
     tg.sendData(JSON.stringify({
         case_id: currentCaseId,
         choice: selectedChoice,
-        text: text,
-        bet: bet
+        text: selectedChoice === 'custom' ? text : "",
+        bet: currentBet
     }));
     tg.close();
 };
 
 document.getElementById('closeModal').onclick = () => {
-    modal.classList.add('hidden');
+    document.getElementById('modal').classList.add('hidden');
 };
 
 function backToList() {
-    caseView.classList.add('hidden');
-    caseList.classList.remove('hidden');
+    document.getElementById('caseView').classList.add('hidden');
+    document.getElementById('caseList').classList.remove('hidden');
     document.getElementById('mainTitle').innerText = "Кейсы";
 }
 
