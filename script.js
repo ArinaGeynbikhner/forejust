@@ -4,18 +4,28 @@ let selectedChoice = null;
 
 tg.expand();
 
+// Парсим данные из единого параметра 'data'
 const urlParams = new URLSearchParams(window.location.search);
-let tokens = parseInt(urlParams.get('tokens') || 0);
+const rawData = JSON.parse(decodeURIComponent(urlParams.get('data') || "{}"));
+
+let tokens = rawData.tokens || 0;
+const casesData = rawData.cases || [];
+const userVotes = rawData.user_votes || {}; // { case_id: { choice, text, bet } }
+
 document.getElementById('tokenCount').innerText = tokens;
-const casesData = JSON.parse(decodeURIComponent(urlParams.get('cases') || "[]"));
 
 function renderCases() {
     const list = document.getElementById('caseList');
     list.innerHTML = '';
     casesData.forEach(c => {
+        const hasVoted = userVotes[c.id];
         const div = document.createElement('div');
         div.className = 'case-card';
-        div.innerHTML = `<h2>${c.title}</h2><p>${c.description}</p><button onclick="openCase(${c.id})">Сделать прогноз</button>`;
+        div.innerHTML = `
+            <h2>${c.title}</h2>
+            <p>${c.description}</p>
+            <button onclick="openCase(${c.id})">${hasVoted ? 'Мой прогноз' : 'Сделать прогноз'}</button>
+        `;
         list.appendChild(div);
     });
 }
@@ -23,21 +33,42 @@ function renderCases() {
 function openCase(id) {
     const c = casesData.find(item => item.id === id);
     currentCaseId = id;
+    const hasVoted = userVotes[id];
+    
     document.getElementById('caseList').classList.add('hidden');
     const view = document.getElementById('caseView');
     view.classList.remove('hidden');
     document.getElementById('mainTitle').innerText = c.title;
 
-    view.innerHTML = `
-        <div class="expert-card" onclick="prepareVote('expert_1', '${c.experts[0].name}')">
-            <h3>${c.experts[0].name}</h3><p>${c.experts[0].text}</p>
-        </div>
-        <div class="expert-card" onclick="prepareVote('expert_2', '${c.experts[1].name}')">
-            <h3>${c.experts[1].name}</h3><p>${c.experts[1].text}</p>
-        </div>
-        <button class="custom-btn" onclick="prepareVote('custom', 'Ваш вариант')">✍️ Написать свой вариант</button>
-        <div class="back-link" onclick="backToList()">← Назад к списку кейсов</div>
-    `;
+    if (hasVoted) {
+        // РЕЖИМ ПРОСМОТРА
+        let choiceText = hasVoted.choice === 'expert_1' ? c.experts[0].name : 
+                         (hasVoted.choice === 'expert_2' ? c.experts[1].name : "Ваш вариант");
+
+        view.innerHTML = `
+            <div class="expert-card" style="border: 2px solid var(--primary); background: #f0f9ff;">
+                <p style="color: var(--primary); font-weight: bold; margin-bottom: 5px;">✅ Прогноз сделан</p>
+                <h3>${choiceText}</h3>
+                ${hasVoted.text ? `<p style="font-style: italic;">"${hasVoted.text}"</p>` : ''}
+                <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee;">
+                    <span>Заморожено: <b>${hasVoted.bet} 💎</b></span>
+                </div>
+            </div>
+            <div class="back-link" onclick="backToList()">← Назад к списку</div>
+        `;
+    } else {
+        // РЕЖИМ ГОЛОСОВАНИЯ
+        view.innerHTML = `
+            <div class="expert-card" onclick="prepareVote('expert_1', '${c.experts[0].name}')">
+                <h3>${c.experts[0].name}</h3><p>${c.experts[0].text}</p>
+            </div>
+            <div class="expert-card" onclick="prepareVote('expert_2', '${c.experts[1].name}')">
+                <h3>${c.experts[1].name}</h3><p>${c.experts[1].text}</p>
+            </div>
+            <button class="custom-btn" onclick="prepareVote('custom', 'Ваш вариант')">✍️ Написать свой вариант</button>
+            <div class="back-link" onclick="backToList()">← Назад к списку</div>
+        `;
+    }
 }
 
 function adjustBet(change) {
@@ -59,12 +90,10 @@ function prepareVote(choice, title) {
 document.getElementById('sendBtn').onclick = () => {
     const betValue = parseInt(document.getElementById('manualBet').value);
     const text = document.getElementById('customText').value;
-
-    // МАТЕМАТИКА ПРОВЕРКИ: Ставка + 1 (если кастом)
     const totalCost = betValue + (selectedChoice === 'custom' ? 1 : 0);
 
     if (totalCost > tokens) {
-        tg.showAlert(`Недостаточно токенов!\nНужно: ${totalCost} 💎\n(Ставка: ${betValue} + Свой вариант: ${selectedChoice === 'custom' ? 1 : 0})`);
+        tg.showAlert(`Недостаточно токенов!\nТребуется: ${totalCost} 💎`);
         return;
     }
 
