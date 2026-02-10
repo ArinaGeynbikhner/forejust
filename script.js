@@ -4,7 +4,6 @@ let selectedChoice = null;
 
 tg.expand();
 
-// Получаем баланс из URL
 const urlParams = new URLSearchParams(window.location.search);
 let tokens = parseInt(urlParams.get('tokens') || 0);
 document.getElementById('tokenCount').innerText = tokens;
@@ -36,8 +35,8 @@ function openCase(id) {
         <div class="expert-card" onclick="prepareVote('expert_2', '${c.experts[1].name}')">
             <h3>${c.experts[1].name}</h3><p>${c.experts[1].text}</p>
         </div>
-        <button class="custom-btn" onclick="prepareVote('custom', 'Ваш прогноз')">✍️ Написать свой вариант</button>
-        <div class="back-link" onclick="backToList()">⬅️ Назад к кейсам</div>
+        <button class="custom-btn" onclick="prepareVote('custom', 'Ваш вариант')">✍️ Написать свой вариант</button>
+        <div class="back-link" onclick="backToList()">← Назад к списку кейсов</div>
     `;
 }
 
@@ -72,8 +71,6 @@ document.getElementById('sendBtn').onclick = () => {
         text: selectedChoice === 'custom' ? text : "",
         bet: betValue
     }));
-    
-    // ВАЖНО: Закрываем, чтобы бот обновил меню
     tg.close();
 };
 
