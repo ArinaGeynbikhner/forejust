@@ -41,15 +41,12 @@ function openCase(id) {
     `;
 }
 
-// Новая функция для кнопок +/-
 function adjustBet(change) {
-    const input = document.getElementById('manualBet');
-    let value = parseInt(input.value) || 0;
+    let value = parseInt(document.getElementById('manualBet').value) || 0;
     value += change;
     if (value < 1) value = 1;
-    input.value = value;
+    document.getElementById('manualBet').value = value;
     currentBet = value;
-    // Снимаем активный класс с кнопок-фишек
     document.querySelectorAll('.bet-chip').forEach(btn => btn.classList.remove('active'));
 }
 
@@ -74,8 +71,8 @@ document.getElementById('sendBtn').onclick = () => {
     const text = document.getElementById('customText').value;
     const finalBet = currentBet;
 
-    if (finalBet <= 0 || finalBet > userTokens) {
-        tg.showAlert("Недостаточно токенов или неверная сумма!");
+    if (finalBet > userTokens) {
+        tg.showAlert("Недостаточно токенов!");
         return;
     }
 

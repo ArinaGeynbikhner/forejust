@@ -21,7 +21,7 @@
             <h3 id="modalTitle">Ваш прогноз</h3>
             <textarea id="customText" placeholder="Опишите ваш прогноз..." class="hidden"></textarea>
             
-            <p class="bet-label">Выберите номинал или настройте сумму:</p>
+            <p class="bet-label">Номинал или настройка суммы:</p>
             <div class="bet-selector">
                 <button class="bet-chip active" onclick="setBet(1)">1</button>
                 <button class="bet-chip" onclick="setBet(2)">2</button>
@@ -30,9 +30,9 @@
             </div>
 
             <div class="manual-bet-container">
-                <button class="bet-control" onclick="adjustBet(-1)">−</button>
+                <button class="bet-control minus" onclick="adjustBet(-1)">−</button>
                 <input type="number" id="manualBet" value="1" min="1" readonly>
-                <button class="bet-control" onclick="adjustBet(1)">+</button>
+                <button class="bet-control plus" onclick="adjustBet(1)">+</button>
             </div>
             
             <div class="modal-buttons">

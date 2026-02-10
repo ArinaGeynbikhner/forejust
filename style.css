@@ -28,22 +28,44 @@ header { display: flex; justify-content: space-between; align-items: center; mar
 .bet-chip { flex: 1; padding: 10px 0; border-radius: 10px; border: 1px solid #ddd; background: #f9f9f9; font-weight: bold; cursor: pointer; }
 .bet-chip.active { background: #0088cc; color: #fff; border-color: #0088cc; }
 
-/* Крупное управление ставкой +/- */
+/* Дизайн капсулы для управления ставкой */
 .manual-bet-container {
-    display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 2px solid #0088cc;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    height: 55px;
+    box-sizing: border-box;
 }
 
 .bet-control {
-    width: 55px; height: 55px; border-radius: 15px; border: 1px solid #ddd; background: #fff;
-    font-size: 24px; font-weight: bold; color: #0088cc; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    width: 60px;
+    height: 100%;
+    border: none;
+    background: #f0f9ff;
+    font-size: 24px;
+    font-weight: bold;
+    color: #0088cc;
+    cursor: pointer;
 }
 
-.bet-control:active { background: #f0f0f0; transform: scale(0.95); }
+.bet-control:active { background: #e0f2fe; }
 
 #manualBet {
-    flex: 1; height: 55px; border-radius: 15px; border: 1px solid #ddd; text-align: center;
-    font-size: 22px; font-weight: bold; background: #fff; color: #333;
+    flex: 1;
+    height: 100%;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    outline: none;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 #manualBet::-webkit-outer-spin-button, #manualBet::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
