@@ -18,16 +18,14 @@
 
     <div id="modal" class="hidden">
         <div class="modal-content">
-            <h3 id="modalTitle" style="margin-top:0; text-align:center; margin-bottom:15px;">Ваш прогноз</h3>
-            
+            <h3 id="modalTitle">Ваш прогноз</h3>
             <textarea id="customText" placeholder="Опишите ваш прогноз..." class="hidden"></textarea>
             
             <p class="bet-label">Сумма ставки</p>
-            
             <div class="bet-control-capsule">
                 <button class="cap-btn" onclick="adjustBet(-1)">−</button>
                 <div class="cap-value">
-                    <input type="number" id="manualBet" value="1" readonly>
+                    <input type="text" id="manualBet" value="1" readonly>
                 </div>
                 <button class="cap-btn" onclick="adjustBet(1)">+</button>
             </div>

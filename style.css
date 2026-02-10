@@ -1,177 +1,74 @@
 :root {
     --primary: #0088cc;
-    --primary-hover: #0077b5;
     --bg: #f4f7f9;
-    --text-main: #333;
-    --text-secondary: #707579;
-    --white: #ffffff;
+    --text: #333;
+    --secondary-text: #707579;
 }
 
 body { 
-    background: var(--bg); 
-    margin: 0; 
-    padding: 15px; 
+    background: var(--bg); margin: 0; padding: 15px; 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-    color: var(--text-main);
 }
 
 header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-h1 { font-size: 22px; margin: 0; font-weight: 700; }
+.tokens { background: #fff; padding: 8px 16px; border-radius: 20px; font-weight: 700; color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
 
-.tokens { 
-    background: var(--white); 
-    padding: 8px 16px; 
-    border-radius: 20px; 
-    font-weight: 700; 
-    color: var(--primary); 
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-/* Карточки кейсов и экспертов */
+/* Карточки */
 .case-card, .expert-card { 
-    background: var(--white); 
-    border-radius: 16px; 
-    padding: 20px; 
-    margin-bottom: 15px; 
-    border: 1px solid rgba(0,0,0,0.05);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    background: #fff; border-radius: 16px; padding: 20px; margin-bottom: 15px; 
+    border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 12px rgba(0,0,0,0.02);
 }
 
-.case-card h2, .expert-card h3 { margin-top: 0; font-size: 18px; margin-bottom: 8px; }
-.case-card p, .expert-card p { font-size: 15px; color: var(--text-secondary); line-height: 1.4; }
-
-/* ПЕРВИЧНАЯ КНОПКА (Главное действие) */
+/* Кнопки и иерархия */
 .main-btn, .case-card button { 
-    width: 100%; 
-    background: var(--primary); 
-    color: var(--white); 
-    border: none; 
-    padding: 16px; 
-    border-radius: 14px; 
-    font-weight: 600; 
-    font-size: 16px; 
-    cursor: pointer;
-    transition: background 0.2s;
+    width: 100%; background: var(--primary); color: #fff; border: none; 
+    padding: 16px; border-radius: 14px; font-weight: 600; font-size: 16px; cursor: pointer;
 }
-.main-btn:active { background: var(--primary-hover); }
 
-/* ВТОРИЧНАЯ КНОПКА (Написать свой вариант) */
 .custom-btn { 
-    width: 100%; 
-    background: transparent; 
-    color: var(--primary); 
-    border: 1.5px solid var(--primary); 
-    padding: 14px; 
-    border-radius: 14px; 
-    margin-top: 10px; 
-    font-size: 15px; 
-    font-weight: 600;
-    cursor: pointer;
+    width: 100%; background: transparent; color: var(--primary); border: 1.5px solid var(--primary); 
+    padding: 14px; border-radius: 14px; margin-top: 10px; font-size: 15px; font-weight: 600; cursor: pointer;
 }
 
-/* ТРЕТИЧНАЯ ССЫЛКА (Назад) */
 .back-link { 
-    display: block;
-    text-align: center; 
-    color: var(--text-secondary); 
-    margin-top: 25px; 
-    cursor: pointer; 
-    font-size: 14px; 
-    font-weight: 500;
-    text-decoration: none;
+    display: block; text-align: center; color: var(--secondary-text); 
+    margin-top: 25px; cursor: pointer; font-size: 14px; font-weight: 500;
 }
-.back-link:active { opacity: 0.6; }
 
-/* Поля ввода и Тексты в модалке */
-.bet-label { 
-    font-size: 16px; 
-    color: var(--text-main); 
-    text-align: center; 
-    margin-bottom: 12px; 
-    font-weight: 600;
-}
+/* Модалка */
+.bet-label { font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 12px; }
 
 #customText { 
-    width: 100%; 
-    height: 110px; 
-    margin-bottom: 20px; 
-    border-radius: 14px; 
-    border: 1px solid #d1d5db; 
-    padding: 14px; 
-    box-sizing: border-box; 
-    font-size: 16px; /* Крупный текст для удобства ввода */
-    font-family: inherit;
-    resize: none;
-    background: #fdfdfd;
+    width: 100%; height: 110px; margin-bottom: 20px; border-radius: 14px; 
+    border: 1px solid #d1d5db; padding: 14px; box-sizing: border-box; 
+    font-size: 16px; font-family: inherit; resize: none;
 }
-#customText::placeholder { color: #9ca3af; font-size: 16px; }
 
-/* Капсула номинала */
+/* Плашка ставки */
 .bet-control-capsule { 
-    display: flex; 
-    align-items: center; 
-    background: #e5e7eb; 
-    border-radius: 16px; 
-    height: 64px; 
-    margin-bottom: 25px; 
-    overflow: hidden; 
+    display: flex; align-items: center; background: #e5e7eb; 
+    border-radius: 16px; height: 64px; margin-bottom: 25px; overflow: hidden; 
 }
 
-.cap-btn { 
-    width: 70px; 
-    height: 100%; 
-    border: none; 
-    background: transparent; 
-    font-size: 26px; 
-    color: var(--primary); 
-    cursor: pointer; 
-}
+.cap-btn { width: 70px; height: 100%; border: none; background: transparent; font-size: 26px; color: var(--primary); cursor: pointer; }
 
 .cap-value { 
-    flex: 1; 
-    height: 100%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    background: var(--white); 
-    border-left: 1px solid #d1d5db; 
-    border-right: 1px solid #d1d5db; 
+    flex: 1; height: 100%; display: flex; align-items: center; justify-content: center; 
+    background: #fff; border-left: 1px solid #d1d5db; border-right: 1px solid #d1d5db; 
 }
 
 #manualBet { 
-    width: 100%; 
-    border: none; 
-    background: transparent; 
-    text-align: center; 
-    font-size: 24px; 
-    font-weight: 800; 
-    outline: none; 
-    color: var(--text-main);
-    -webkit-appearance: none;
-    margin: 0;
+    width: 100%; border: none; background: transparent; text-align: center; 
+    font-size: 24px; font-weight: 800; outline: none; appearance: none; -webkit-appearance: none;
 }
 
 .modal-buttons { display: flex; flex-direction: column; gap: 12px; }
-.btn-secondary { 
-    background: #f1f3f5 !important; 
-    color: #555 !important; 
-    box-shadow: none;
-}
+.btn-secondary { background: #f1f3f5 !important; color: #555 !important; }
 
 #modal { 
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
     background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; 
-    z-index: 999;
-    backdrop-filter: blur(2px);
+    z-index: 999; backdrop-filter: blur(2px);
 }
-
-.modal-content { 
-    background: var(--white); 
-    padding: 28px; 
-    border-radius: 24px; 
-    width: 88%; 
-    max-width: 360px; 
-    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-}
-
+.modal-content { background: #fff; padding: 28px; border-radius: 24px; width: 88%; max-width: 360px; }
 .hidden { display: none !important; }
