@@ -60,8 +60,11 @@ document.getElementById('sendBtn').onclick = () => {
     const betValue = parseInt(document.getElementById('manualBet').value);
     const text = document.getElementById('customText').value;
 
-    if (betValue > tokens) {
-        tg.showAlert("Недостаточно токенов!");
+    // МАТЕМАТИКА ПРОВЕРКИ: Ставка + 1 (если кастом)
+    const totalCost = betValue + (selectedChoice === 'custom' ? 1 : 0);
+
+    if (totalCost > tokens) {
+        tg.showAlert(`Недостаточно токенов!\nНужно: ${totalCost} 💎\n(Ставка: ${betValue} + Свой вариант: ${selectedChoice === 'custom' ? 1 : 0})`);
         return;
     }
 
