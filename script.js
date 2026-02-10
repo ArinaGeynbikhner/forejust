@@ -1,13 +1,13 @@
 let tg = window.Telegram.WebApp;
 let currentCaseId = null;
 let selectedChoice = null;
-let currentBet = 1;
 
 tg.expand();
 
+// Получаем баланс из URL
 const urlParams = new URLSearchParams(window.location.search);
-const userTokens = parseInt(urlParams.get('tokens') || 0);
-document.getElementById('tokenCount').innerText = userTokens;
+let tokens = parseInt(urlParams.get('tokens') || 0);
+document.getElementById('tokenCount').innerText = tokens;
 const casesData = JSON.parse(decodeURIComponent(urlParams.get('cases') || "[]"));
 
 function renderCases() {
@@ -37,26 +37,16 @@ function openCase(id) {
             <h3>${c.experts[1].name}</h3><p>${c.experts[1].text}</p>
         </div>
         <button class="custom-btn" onclick="prepareVote('custom', 'Ваш прогноз')">✍️ Написать свой вариант</button>
-        <div class="back-link" onclick="backToList()">⬅️ Назад к списку кейсов</div>
+        <div class="back-link" onclick="backToList()">⬅️ Назад к кейсам</div>
     `;
 }
 
 function adjustBet(change) {
-    let value = parseInt(document.getElementById('manualBet').value) || 0;
-    value += change;
-    if (value < 1) value = 1;
-    document.getElementById('manualBet').value = value;
-    currentBet = value;
-    document.querySelectorAll('.bet-chip').forEach(btn => btn.classList.remove('active'));
-}
-
-function setBet(amount) {
-    currentBet = amount;
-    document.getElementById('manualBet').value = amount;
-    document.querySelectorAll('.bet-chip').forEach(btn => {
-        btn.classList.remove('active');
-        if (parseInt(btn.innerText) === amount) btn.classList.add('active');
-    });
+    const input = document.getElementById('manualBet');
+    let val = parseInt(input.value) || 1;
+    val += change;
+    if (val < 1) val = 1;
+    input.value = val;
 }
 
 function prepareVote(choice, title) {
@@ -68,10 +58,10 @@ function prepareVote(choice, title) {
 }
 
 document.getElementById('sendBtn').onclick = () => {
+    const betValue = parseInt(document.getElementById('manualBet').value);
     const text = document.getElementById('customText').value;
-    const finalBet = currentBet;
 
-    if (finalBet > userTokens) {
+    if (betValue > tokens) {
         tg.showAlert("Недостаточно токенов!");
         return;
     }
@@ -80,8 +70,10 @@ document.getElementById('sendBtn').onclick = () => {
         case_id: currentCaseId,
         choice: selectedChoice,
         text: selectedChoice === 'custom' ? text : "",
-        bet: finalBet
+        bet: betValue
     }));
+    
+    // ВАЖНО: Закрываем, чтобы бот обновил меню
     tg.close();
 };
 
