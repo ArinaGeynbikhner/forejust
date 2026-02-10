@@ -41,19 +41,26 @@ function openCase(id) {
     `;
 }
 
+// Новая функция для кнопок +/-
+function adjustBet(change) {
+    const input = document.getElementById('manualBet');
+    let value = parseInt(input.value) || 0;
+    value += change;
+    if (value < 1) value = 1;
+    input.value = value;
+    currentBet = value;
+    // Снимаем активный класс с кнопок-фишек
+    document.querySelectorAll('.bet-chip').forEach(btn => btn.classList.remove('active'));
+}
+
 function setBet(amount) {
     currentBet = amount;
-    document.getElementById('manualBet').value = ""; 
+    document.getElementById('manualBet').value = amount;
     document.querySelectorAll('.bet-chip').forEach(btn => {
         btn.classList.remove('active');
         if (parseInt(btn.innerText) === amount) btn.classList.add('active');
     });
 }
-
-document.getElementById('manualBet').oninput = (e) => {
-    currentBet = parseInt(e.target.value) || 0;
-    document.querySelectorAll('.bet-chip').forEach(btn => btn.classList.remove('active'));
-};
 
 function prepareVote(choice, title) {
     selectedChoice = choice;
@@ -65,7 +72,7 @@ function prepareVote(choice, title) {
 
 document.getElementById('sendBtn').onclick = () => {
     const text = document.getElementById('customText').value;
-    const finalBet = parseInt(document.getElementById('manualBet').value) || currentBet;
+    const finalBet = currentBet;
 
     if (finalBet <= 0 || finalBet > userTokens) {
         tg.showAlert("Недостаточно токенов или неверная сумма!");

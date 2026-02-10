@@ -9,12 +9,10 @@ header { display: flex; justify-content: space-between; align-items: center; mar
 
 .case-card, .expert-card { background: #fff; border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #eee; }
 
-/* Кнопка в списке */
 .case-card button {
     width: 100%; background: #0088cc; color: #fff; border: none; padding: 14px; border-radius: 12px; font-weight: 600; cursor: pointer;
 }
 
-/* Кнопка "Написать свой вариант" - уменьшена */
 .custom-btn {
     width: 100%; background: #0088cc; color: #fff; border: none; padding: 10px; border-radius: 10px; font-size: 14px; font-weight: 500; cursor: pointer; margin-top: 10px;
 }
@@ -26,22 +24,32 @@ header { display: flex; justify-content: space-between; align-items: center; mar
 .modal-content { background:#fff; width:90%; max-width:400px; padding:25px; border-radius:24px; box-sizing: border-box; }
 
 .bet-label { font-size: 13px; color: #888; text-align: center; margin-bottom: 10px; }
-.bet-selector { display: flex; gap: 8px; margin-bottom: 10px; }
+.bet-selector { display: flex; gap: 8px; margin-bottom: 15px; }
 .bet-chip { flex: 1; padding: 10px 0; border-radius: 10px; border: 1px solid #ddd; background: #f9f9f9; font-weight: bold; cursor: pointer; }
 .bet-chip.active { background: #0088cc; color: #fff; border-color: #0088cc; }
 
-#manualBet { width: 100%; 
-    padding: 12px; 
-    border-radius: 10px; 
-    border: 1px solid #ddd; 
-    margin-bottom: 20px; 
-    box-sizing: border-box; 
-    font-size: 16px; 
-    text-align: center; }
+/* Крупное управление ставкой +/- */
+.manual-bet-container {
+    display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px;
+}
+
+.bet-control {
+    width: 55px; height: 55px; border-radius: 15px; border: 1px solid #ddd; background: #fff;
+    font-size: 24px; font-weight: bold; color: #0088cc; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.bet-control:active { background: #f0f0f0; transform: scale(0.95); }
+
+#manualBet {
+    flex: 1; height: 55px; border-radius: 15px; border: 1px solid #ddd; text-align: center;
+    font-size: 22px; font-weight: bold; background: #fff; color: #333;
+}
+
+#manualBet::-webkit-outer-spin-button, #manualBet::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
 #customText { width: 100%; height: 100px; padding: 12px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 15px; resize: none; box-sizing: border-box; }
 
-/* Кнопки в модалке */
 .modal-buttons { display: flex; flex-direction: column; gap: 10px; }
 .main-btn { width: 100%; background: #0088cc; color: #fff; border: none; padding: 14px; border-radius: 12px; font-weight: 600; cursor: pointer; }
 .btn-secondary { background: #f0f2f5 !important; color: #555 !important; }
