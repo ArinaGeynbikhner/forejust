@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Forejust Mini App</title>
+    <title>Forejust</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -14,31 +14,25 @@
     </header>
 
     <div id="caseList"></div>
-
     <div id="caseView" class="hidden"></div>
 
     <div id="modal" class="hidden">
-        <div id="modalOverlay">
-            <div class="modal-content">
-                <h3 id="modalTitle">Ваш прогноз</h3>
-                
-                <textarea id="customText" placeholder="Опишите ваш прогноз..." class="hidden"></textarea>
-                
-                <p class="bet-label">Выберите ставку (токенов):</p>
-                
-                <div class="bet-selector">
-                    <button class="bet-chip active" onclick="setBet(1)">1</button>
-                    <button class="bet-chip" onclick="setBet(2)">2</button>
-                    <button class="bet-chip" onclick="setBet(5)">5</button>
-                    <button class="bet-chip" onclick="setBet(10)">10</button>
-                </div>
-                
-                <input type="hidden" id="betAmount" value="1">
-
-                <div class="modal-buttons">
-                    <button id="sendBtn">Подтвердить</button>
-                    <button id="closeModal">Отмена</button>
-                </div>
+        <div class="modal-content">
+            <h3 id="modalTitle">Ваш прогноз</h3>
+            <textarea id="customText" placeholder="Опишите ваш прогноз..." class="hidden"></textarea>
+            
+            <p class="bet-label">Выберите или введите ставку:</p>
+            <div class="bet-selector">
+                <button class="bet-chip active" onclick="setBet(1)">1</button>
+                <button class="bet-chip" onclick="setBet(2)">2</button>
+                <button class="bet-chip" onclick="setBet(5)">5</button>
+                <button class="bet-chip" onclick="setBet(10)">10</button>
+            </div>
+            <input type="number" id="manualBet" placeholder="Своя сумма..." min="1">
+            
+            <div class="modal-buttons">
+                <button id="sendBtn" class="main-btn">Подтвердить</button>
+                <button id="closeModal" class="main-btn btn-secondary">Отмена</button>
             </div>
         </div>
     </div>
