@@ -1,47 +1,37 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8" />
-    <title>Битва экспертов</title>
-
-    <!-- Telegram WebApp API -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Forejust Mini App</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-
-<div class="app">
-
     <header>
-        <h1>🏁 Битва экспертов</h1>
-        <div class="tokens">
-            💎 <span id="tokens">0</span>
-        </div>
+        <h1 id="mainTitle">Кейсы</h1>
+        <div class="tokens">💎 <span id="tokenCount">0</span></div>
     </header>
 
-    <!-- Список кейсов -->
-    <section id="cases-list"></section>
+    <div id="caseList"></div>
+    <div id="caseView" class="hidden"></div>
 
-    <!-- Один кейс -->
-    <section id="case-view" style="display:none;"></section>
-
-    <div id="customModal" class="modal" style="display:none;">
+    <div id="modal" class="hidden">
         <div class="modal-content">
-            <h3>Ваш прогноз (спишется 1 токен)</h3>
-            <textarea id="customText" rows="4" placeholder="Введите прогноз"></textarea>
+            <h3 id="modalTitle">Ваш прогноз</h3>
+            
+            <textarea id="customText" placeholder="Опишите ваш прогноз..." class="hidden"></textarea>
+            
+            <label style="font-size: 14px; color: #666;">Ставка (токенов):</label>
+            <input type="number" id="betAmount" value="1" min="1">
+
             <div class="modal-buttons">
-                <button onclick="submitCustom()">Отправить</button>
-                <button onclick="closeModal()">Отмена</button>
+                <button id="sendBtn">Отправить</button>
+                <button id="closeModal">Отмена</button>
             </div>
         </div>
     </div>
 
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
-
