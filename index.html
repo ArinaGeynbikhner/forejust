@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Forejust</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -12,7 +11,6 @@
         <h1 id="mainTitle">Кейсы</h1>
         <div class="tokens">💎 <span id="tokenCount">0</span></div>
     </header>
-
     <div id="caseList"></div>
     <div id="caseView" class="hidden"></div>
 
@@ -20,17 +18,12 @@
         <div class="modal-content">
             <h3 id="modalTitle">Ваш прогноз</h3>
             <textarea id="customText" placeholder="Опишите ваш прогноз..." class="hidden"></textarea>
-            
             <p class="bet-label">Сумма ставки:</p>
-            
             <div class="bet-control-capsule">
                 <button class="cap-btn" onclick="adjustBet(-1)">−</button>
-                <div class="cap-value">
-                    <input type="number" id="manualBet" value="1" readonly>
-                </div>
+                <div class="cap-value"><input type="number" id="manualBet" value="1" readonly></div>
                 <button class="cap-btn" onclick="adjustBet(1)">+</button>
             </div>
-
             <div class="modal-buttons">
                 <button id="sendBtn" class="main-btn">Подтвердить</button>
                 <button id="closeModal" class="main-btn btn-secondary">Отмена</button>
