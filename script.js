@@ -24,6 +24,25 @@ const userVotes = rawData.user_votes || {};
 
 document.getElementById('tokenCount').innerText = tokens;
 
+// --- ФУНКЦИЯ ДЛЯ КНОПОК ИЗ ТВОЕГО HTML ---
+window.adjustBet = function(amount) {
+    const betInput = document.getElementById('manualBet');
+    if (!betInput) return;
+
+    let currentBet = parseInt(betInput.value) || 1;
+    let newBet = currentBet + amount;
+
+    // Расчет стоимости (если свой вариант, добавляем 1 токен комиссии)
+    const fee = (selectedChoice === 'custom' ? 1 : 0);
+
+    if (newBet >= 1 && (newBet + fee) <= tokens) {
+        betInput.value = newBet;
+    } else if ((newBet + fee) > tokens && amount > 0) {
+        // Если пытаемся увеличить ставку сверх лимита
+        tg.HapticFeedback.notificationOccurred('error'); // Легкая вибрация при ошибке
+    }
+};
+
 function renderCases() {
     const list = document.getElementById('caseList');
     list.innerHTML = '';
@@ -80,11 +99,14 @@ function prepareVote(choice, title) {
     selectedChoice = choice;
     document.getElementById('modalTitle').innerText = title;
     const textArea = document.getElementById('customText');
+    
+    // Сброс ставки на 1 при каждом открытии
+    document.getElementById('manualBet').value = 1;
+    
     choice === 'custom' ? textArea.classList.remove('hidden') : textArea.classList.add('hidden');
     document.getElementById('modal').classList.remove('hidden');
 }
 
-// РАБОЧАЯ КНОПКА ПОДТВЕРДИТЬ
 document.getElementById('sendBtn').onclick = () => {
     const betValue = parseInt(document.getElementById('manualBet').value) || 1;
     const text = document.getElementById('customText').value;
@@ -95,13 +117,14 @@ document.getElementById('sendBtn').onclick = () => {
         return;
     }
 
-    // ТЕПЕРЬ ЭТО СРАБОТАЕТ, т.к. открыто через Reply Button
     tg.sendData(JSON.stringify({
         case_id: currentCaseId,
         choice: selectedChoice,
         text: selectedChoice === 'custom' ? text : "",
         bet: betValue
     }));
+    
+    tg.close();
 };
 
 document.getElementById('closeModal').onclick = () => {
@@ -111,6 +134,7 @@ document.getElementById('closeModal').onclick = () => {
 function backToList() {
     document.getElementById('caseView').classList.add('hidden');
     document.getElementById('caseList').classList.remove('hidden');
+    document.getElementById('mainTitle').innerText = "Кейсы";
 }
 
 renderCases();
