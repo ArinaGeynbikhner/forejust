@@ -3,20 +3,32 @@ let currentCaseId = null;
 let selectedChoice = null;
 
 tg.expand();
+tg.ready(); // Сообщаем системе, что Mini App загружен
 
-// Парсим данные из единого параметра 'data'
+// Парсим данные из URL
 const urlParams = new URLSearchParams(window.location.search);
-const rawData = JSON.parse(decodeURIComponent(urlParams.get('data') || "{}"));
+let rawData = {};
+try {
+    rawData = JSON.parse(decodeURIComponent(urlParams.get('data') || "{}"));
+} catch (e) {
+    console.error("Ошибка парсинга данных:", e);
+}
 
 let tokens = rawData.tokens || 0;
 const casesData = rawData.cases || [];
-const userVotes = rawData.user_votes || {}; // { case_id: { choice, text, bet } }
+const userVotes = rawData.user_votes || {}; 
 
 document.getElementById('tokenCount').innerText = tokens;
 
 function renderCases() {
     const list = document.getElementById('caseList');
     list.innerHTML = '';
+    
+    if (casesData.length === 0) {
+        list.innerHTML = '<p style="text-align:center; padding:20px;">Кейсов пока нет...</p>';
+        return;
+    }
+
     casesData.forEach(c => {
         const hasVoted = userVotes[c.id];
         const div = document.createElement('div');
@@ -24,7 +36,7 @@ function renderCases() {
         div.innerHTML = `
             <h2>${c.title}</h2>
             <p>${c.description}</p>
-            <button onclick="openCase(${c.id})">${hasVoted ? 'Мой прогноз' : 'Сделать прогноз'}</button>
+            <button onclick="openCase(${c.id})">${hasVoted ? '📊 Мой прогноз' : '🎮 Сделать прогноз'}</button>
         `;
         list.appendChild(div);
     });
@@ -32,6 +44,8 @@ function renderCases() {
 
 function openCase(id) {
     const c = casesData.find(item => item.id === id);
+    if (!c) return;
+    
     currentCaseId = id;
     const hasVoted = userVotes[id];
     
@@ -41,13 +55,12 @@ function openCase(id) {
     document.getElementById('mainTitle').innerText = c.title;
 
     if (hasVoted) {
-        // РЕЖИМ ПРОСМОТРА
         let choiceText = hasVoted.choice === 'expert_1' ? c.experts[0].name : 
                          (hasVoted.choice === 'expert_2' ? c.experts[1].name : "Ваш вариант");
 
         view.innerHTML = `
-            <div class="expert-card" style="border: 2px solid var(--primary); background: #f0f9ff;">
-                <p style="color: var(--primary); font-weight: bold; margin-bottom: 5px;">✅ Прогноз сделан</p>
+            <div class="expert-card" style="border: 2px solid #007bff; background: #f0f9ff;">
+                <p style="color: #007bff; font-weight: bold; margin-bottom: 5px;">✅ Прогноз принят</p>
                 <h3>${choiceText}</h3>
                 ${hasVoted.text ? `<p style="font-style: italic;">"${hasVoted.text}"</p>` : ''}
                 <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee;">
@@ -57,7 +70,6 @@ function openCase(id) {
             <div class="back-link" onclick="backToList()">← Назад к списку</div>
         `;
     } else {
-        // РЕЖИМ ГОЛОСОВАНИЯ
         view.innerHTML = `
             <div class="expert-card" onclick="prepareVote('expert_1', '${c.experts[0].name}')">
                 <h3>${c.experts[0].name}</h3><p>${c.experts[0].text}</p>
@@ -65,7 +77,7 @@ function openCase(id) {
             <div class="expert-card" onclick="prepareVote('expert_2', '${c.experts[1].name}')">
                 <h3>${c.experts[1].name}</h3><p>${c.experts[1].text}</p>
             </div>
-            <button class="custom-btn" onclick="prepareVote('custom', 'Ваш вариант')">✍️ Написать свой вариант</button>
+            <button class="custom-btn" onclick="prepareVote('custom', 'Ваш вариант')">✍️ Свой вариант (+1 💎)</button>
             <div class="back-link" onclick="backToList()">← Назад к списку</div>
         `;
     }
@@ -93,7 +105,7 @@ document.getElementById('sendBtn').onclick = () => {
     const totalCost = betValue + (selectedChoice === 'custom' ? 1 : 0);
 
     if (totalCost > tokens) {
-        tg.showAlert(`Недостаточно токенов!\nТребуется: ${totalCost} 💎`);
+        tg.showAlert(`Недостаточно токенов! Баланс: ${tokens} 💎`);
         return;
     }
 
@@ -103,7 +115,6 @@ document.getElementById('sendBtn').onclick = () => {
         text: selectedChoice === 'custom' ? text : "",
         bet: betValue
     }));
-    tg.close();
 };
 
 document.getElementById('closeModal').onclick = () => {
