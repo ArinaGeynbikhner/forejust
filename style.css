@@ -14,15 +14,20 @@ html {
 }
 
 body { 
-    /* ГРАДИЕНТ: Снизу (графит) вверх (в чистый черный) */
-    background: linear-gradient(to top, var(--bg-bottom) 0%, var(--bg-top) 50%);
-    background-color: var(--bg-top); /* Чтобы верх был гарантированно черным */
-    background-attachment: fixed;
+    /* ГРАДИЕНТ: Сверху вниз. Верх (0-30%) - четко черный, к низу (100%) - графит */
+    background: linear-gradient(
+        to bottom, 
+        #000000 0%, 
+        #000000 30%, 
+        var(--bg-bottom) 100%
+    );
+    background-attachment: fixed; /* Фиксирует фон, чтобы он не скроллился */
+    background-repeat: no-repeat;
     color: var(--text);
     margin: 0; 
     padding: 15px; 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    min-height: 100%; 
+    min-height: 100vh; 
     box-sizing: border-box;
 }
 
