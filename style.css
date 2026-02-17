@@ -1,18 +1,29 @@
 :root {
     --primary: #24a1de; 
-    --bg: #161616;      /* Глубокий черный без синевы */
-    --card-bg: #202020; /* Нейтральный темно-серый для карточек */
+    --bg-bottom: #323232; /* Чуть светлее черный для низа градиента */
+    --bg-top: #1e1e1e;    /* Глубокий черный для верха */
+    --card-bg: #272727;   /* Нейтральный темно-серый для карточек */
     --text: #ffffff;    
     --secondary-text: #999999; 
-    --border: rgba(255, 255, 255, 0.08); 
+    --border: rgba(255, 255, 255, 0.08);
+    /* Переменная для еле заметного сияния карточек */
+    --card-glow: inset 0 0 25px rgba(255, 255, 255, 0.03);
+}
+
+html {
+    height: 100%; /* Нужно для растягивания градиента */
 }
 
 body { 
-    background: var(--bg); 
+    /* ЛЕГОНЬКИЙ ГРАДИЕНТ ФОНА (снизу вверх) */
+    background: linear-gradient(to top, var(--bg-bottom), var(--bg-top));
+    background-attachment: fixed; /* Чтобы градиент не ездил при скролле */
     color: var(--text);
     margin: 0; 
     padding: 15px; 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100%; 
+    box-sizing: border-box;
 }
 
 header { 
@@ -29,18 +40,22 @@ header {
     font-weight: 700; 
     color: var(--primary); 
     border: 1px solid var(--border);
+    /* Токенам тоже добавим микро-сияние */
+    box-shadow: var(--card-glow);
 }
 
-/* Карточки */
+/* Карточки с ЕЛЕ ЗАМЕТНЫМ сиянием */
 .case-card, .expert-card { 
     background: var(--card-bg); 
     border-radius: 16px; 
     padding: 20px; 
     margin-bottom: 15px; 
-    border: 1px solid var(--border); 
+    border: 1px solid var(--border);
+    /* Внутреннее сияние от краев */
+    box-shadow: var(--card-glow);
 }
 
-/* Кнопки с внутренним сиянием */
+/* Кнопки с ярким внутренним сиянием (как было) */
 .main-btn, .case-card button { 
     width: 100%; 
     background: var(--primary); 
@@ -51,7 +66,6 @@ header {
     font-weight: 600; 
     font-size: 16px; 
     cursor: pointer;
-    /* Внутреннее сияние от краев */
     box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.3), 0 4px 15px rgba(0, 0, 0, 0.4);
     transition: transform 0.1s ease;
 }
@@ -89,7 +103,7 @@ header {
     margin-bottom: 20px; 
     border-radius: 14px; 
     border: 1px solid var(--border); 
-    background: #262626; /* Нейтральный фон ввода */
+    background: #262626; 
     color: #fff;
     padding: 14px; 
     box-sizing: border-box; 
@@ -150,7 +164,7 @@ header {
 .btn-secondary { 
     background: #333333 !important; 
     color: #cccccc !important; 
-    box-shadow: none !important; /* Убираем сияние у кнопки отмены */
+    box-shadow: none !important; 
 }
 
 #modal { 
@@ -167,6 +181,7 @@ header {
     backdrop-filter: blur(5px); 
 }
 
+/* Модальное окно тоже получает микро-сияние */
 .modal-content { 
     background: var(--card-bg); 
     padding: 28px; 
@@ -174,6 +189,7 @@ header {
     width: 88%; 
     max-width: 360px; 
     border: 1px solid var(--border);
+    box-shadow: var(--card-glow);
 }
 
 .hidden { display: none !important; }
