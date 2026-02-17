@@ -1,23 +1,23 @@
 :root {
     --primary: #24a1de; 
-    --bg-bottom: #1f1f1f; /* Чуть светлее черный для низа градиента */
-    --bg-top: #000000;    /* Глубокий черный для верха */
-    --card-bg: #272727;   /* Нейтральный темно-серый для карточек */
+    --bg-bottom: #1a1a1a; /* Мягкий графитовый для низа */
+    --bg-top: #000000;    /* ЧИСТО ЧЕРНЫЙ для верха */
+    --card-bg: #141414;   /* Нейтральный фон карточек */
     --text: #ffffff;    
     --secondary-text: #999999; 
     --border: rgba(255, 255, 255, 0.08);
-    /* Переменная для еле заметного сияния карточек */
-    --card-glow: inset 0 0 25px rgba(255, 255, 255, 0.03);
+    --card-glow: inset 0 0 25px rgba(255, 255, 255, 0.03); /* Микро-блик */
 }
 
 html {
-    height: 100%; /* Нужно для растягивания градиента */
+    height: 100%;
 }
 
 body { 
-    /* ЛЕГОНЬКИЙ ГРАДИЕНТ ФОНА (снизу вверх) */
-    background: linear-gradient(to top, var(--bg-bottom), var(--bg-top));
-    background-attachment: fixed; /* Чтобы градиент не ездил при скролле */
+    /* ГРАДИЕНТ: Снизу (графит) вверх (в чистый черный) */
+    background: linear-gradient(to top, var(--bg-bottom) 0%, var(--bg-top) 50%);
+    background-color: var(--bg-top); /* Чтобы верх был гарантированно черным */
+    background-attachment: fixed;
     color: var(--text);
     margin: 0; 
     padding: 15px; 
@@ -31,6 +31,7 @@ header {
     justify-content: space-between; 
     align-items: center; 
     margin-bottom: 25px; 
+    background: transparent;
 }
 
 .tokens { 
@@ -40,22 +41,20 @@ header {
     font-weight: 700; 
     color: var(--primary); 
     border: 1px solid var(--border);
-    /* Токенам тоже добавим микро-сияние */
     box-shadow: var(--card-glow);
 }
 
-/* Карточки с ЕЛЕ ЗАМЕТНЫМ сиянием */
+/* Карточки с микро-бликом по краям */
 .case-card, .expert-card { 
     background: var(--card-bg); 
     border-radius: 16px; 
     padding: 20px; 
     margin-bottom: 15px; 
     border: 1px solid var(--border);
-    /* Внутреннее сияние от краев */
     box-shadow: var(--card-glow);
 }
 
-/* Кнопки с ярким внутренним сиянием (как было) */
+/* Кнопки с внутренним неоновым сиянием */
 .main-btn, .case-card button { 
     width: 100%; 
     background: var(--primary); 
@@ -96,26 +95,27 @@ header {
     font-size: 14px; 
 }
 
-/* Модалка */
+/* Модалка и поля ввода */
 #customText { 
     width: 100%; 
     height: 110px; 
     margin-bottom: 20px; 
     border-radius: 14px; 
     border: 1px solid var(--border); 
-    background: #262626; 
+    background: #222; 
     color: #fff;
     padding: 14px; 
     box-sizing: border-box; 
     font-size: 16px; 
     resize: none;
+    outline: none;
 }
 
 /* Плашка ставки */
 .bet-control-capsule { 
     display: flex; 
     align-items: center; 
-    background: #262626; 
+    background: #222; 
     border-radius: 16px; 
     height: 64px; 
     margin-bottom: 25px; 
@@ -162,8 +162,8 @@ header {
 }
 
 .btn-secondary { 
-    background: #333333 !important; 
-    color: #cccccc !important; 
+    background: #2a2a2a !important; 
+    color: #888 !important; 
     box-shadow: none !important; 
 }
 
@@ -173,15 +173,14 @@ header {
     left: 0; 
     width: 100%; 
     height: 100%; 
-    background: rgba(0,0,0,0.85); 
+    background: rgba(0,0,0,0.9); 
     display: flex; 
     align-items: center; 
     justify-content: center; 
     z-index: 999; 
-    backdrop-filter: blur(5px); 
+    backdrop-filter: blur(8px); 
 }
 
-/* Модальное окно тоже получает микро-сияние */
 .modal-content { 
     background: var(--card-bg); 
     padding: 28px; 
