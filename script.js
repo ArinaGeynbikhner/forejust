@@ -53,7 +53,7 @@ function renderCases() {
         div.innerHTML = `
             <h2>${c.title}</h2>
             <p>${c.description}</p>
-            <button onclick="openCase(${c.id})">${hasVoted ? '📊 Мой прогноз' : '🎮 Сделать прогноз'}</button>
+            <button onclick="openCase(${c.id})">${hasVoted ? 'Мой прогноз' : 'Сделать прогноз'}</button>
         `;
         list.appendChild(div);
     });
@@ -89,7 +89,7 @@ function openCase(id) {
             <div class="expert-card" onclick="prepareVote('expert_2', '${c.experts[1].name}')">
                 <h3>${c.experts[1].name}</h3><p>${c.experts[1].text}</p>
             </div>
-            <button class="custom-btn" onclick="prepareVote('custom', 'Ваш вариант')">✍️ Свой вариант</button>
+            <button class="custom-btn" onclick="prepareVote('custom', 'Ваш вариант')">Свой вариант</button>
             <div class="back-link" onclick="backToList()">← Назад</div>
         `;
     }
