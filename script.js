@@ -46,14 +46,26 @@ window.adjustBet = function(amount) {
 function renderCases() {
     const list = document.getElementById('caseList');
     list.innerHTML = '';
+    
     casesData.forEach(c => {
         const hasVoted = userVotes[c.id];
         const div = document.createElement('div');
         div.className = 'case-card';
+        
+        // Определяем текст и стиль кнопки в зависимости от того, сделан ли прогноз
+        const buttonText = hasVoted ? 'Мой прогноз' : 'Сделать прогноз';
+        
+        // Если проголосовал — красим в 001E43, если нет — оставляем пустую строку (стиль из CSS)
+        const buttonStyle = hasVoted 
+            ? 'background: #001E43 !important; color: #136AFF !important; box-shadow: inset 0 0 12px rgba(19, 106, 255, 0.45) !important;' 
+            : '';
+
         div.innerHTML = `
             <h2>${c.title}</h2>
             <p>${c.description}</p>
-            <button onclick="openCase(${c.id})">${hasVoted ? 'Мой прогноз' : 'Сделать прогноз'}</button>
+            <button onclick="openCase(${c.id})" style="${buttonStyle}">
+                ${buttonText}
+            </button>
         `;
         list.appendChild(div);
     });
