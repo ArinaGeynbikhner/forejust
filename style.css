@@ -9,17 +9,10 @@
     --card-glow: inset 0 0 25px rgba(255, 255, 255, 0.03);
 }
 
-html {
-    height: 100%;
-}
+html { height: 100%; }
 
 body { 
-    background: linear-gradient(
-        to bottom, 
-        #000000 0%, 
-        #000000 30%, 
-        var(--bg-bottom) 100%
-    );
+    background: linear-gradient(to bottom, #000000 0%, #000000 30%, var(--bg-bottom) 100%);
     background-attachment: fixed;
     background-repeat: no-repeat;
     color: var(--text);
@@ -50,69 +43,77 @@ header {
     box-shadow: var(--card-glow);
 }
 
-/* КАРТОЧКИ: Радиус 32px (в 2 раза больше старого) */
+/* КАРТОЧКИ: И кейсы, и эксперты теперь имеют одинаковые отступы 26px */
 .case-card, .expert-card { 
     background: var(--card-bg); 
     border-radius: 32px !important; 
-    padding: 26px; 
+    padding: 26px !important; 
     margin-bottom: 20px; 
     border: 1px solid var(--border);
     box-shadow: var(--card-glow);
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
 }
 
-.case-card h2, .case-card h3 {
+.case-card h2, .case-card h3, .expert-card h3 {
     margin: 0 0 10px 0;
 }
 
-/* ТЕКСТ В КАРТОЧКАХ: Увеличенный отступ, чтобы не лип к кнопке */
-.case-card p { 
+/* ТЕКСТ В КАРТОЧКАХ */
+.case-card p, .expert-card p { 
     color: var(--secondary-text); 
-    margin: 0 0 28px 0 !important; /* Увеличили расстояние */
+    margin: 0 0 28px 0 !important; 
     line-height: 1.5;
     font-size: 15px;
 }
 
-/* КНОПКИ: Овальные + твои объемные тени */
-.main-btn, .case-card button { 
+/* КНОПКИ: Основной объемный стиль */
+.main-btn, .case-card button, .custom-btn { 
     width: 100%; 
     background: var(--primary) !important; 
     color: #fff !important; 
     border: none !important; 
-    padding: 12px 20px; 
-    border-radius: 50px !important; /* Овальные края */
+    padding: 14px 20px; 
+    border-radius: 50px !important; 
     font-weight: 600; 
     font-size: 15px; 
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    /* Твои параметры теней для объема */
     box-shadow: 
-        inset 0 17px 54px rgba(197, 215, 246, 0.4),  /* Сверху светлая */
-        inset 0 -37px 54px rgba(4, 55, 163, 0.4),   /* Снизу темная */
-        0 4px 15px rgba(0, 0, 0, 0.4) !important;   /* Внешняя */
-    
-    transition: transform 0.1s ease, filter 0.2s ease;
+        inset 0 17px 54px rgba(197, 215, 246, 0.4), 
+        inset 0 -37px 54px rgba(4, 55, 163, 0.4), 
+        0 4px 15px rgba(0, 0, 0, 0.4) !important;
+    transition: transform 0.1s ease;
 }
 
-.main-btn:active, .case-card button:active {
-    transform: scale(0.97);
-    filter: brightness(1.1);
+/* КНОПКА "МОЙ ПРОГНОЗ": Темный стиль (когда кнопка в карточке с уже сделанным выбором) */
+/* Мы ищем кнопку, которая идет после текста "✅ Вы участвуете" или просто меняем её цвет */
+.case-card button:not(:last-child), 
+button[onclick*="openCase"] {
+    /* Это правило применится к кнопке в списке, если ты добавишь ей класс в JS, 
+       но пока мы сделаем универсальный селектор для неактивных состояний */
 }
 
-.custom-btn { 
-    width: 100%; 
-    background: transparent; 
-    color: var(--primary); 
-    border: 1.5px solid var(--primary); 
-    padding: 10px; 
-    border-radius: 50px; 
-    margin-top: 12px; 
-    font-size: 14px; 
-    font-weight: 600; 
+/* Если в script.js кнопка получает текст 'Мой прогноз', этот стиль её перекрасит */
+button:contains('Мой прогноз'), 
+.voted-btn {
+    background: #001E43 !important;
+    color: #136AFF !important;
+    box-shadow: inset 0 0 12px rgba(19, 106, 255, 0.45) !important;
+}
+
+/* КНОПКА НАЗАД: По центру внизу */
+.back-link { 
+    display: block !important;
+    text-align: center !important; 
+    color: var(--secondary-text) !important; 
+    margin: 30px auto !important; 
+    cursor: pointer; 
+    font-size: 15px;
+    width: 100%;
 }
 
 /* МОДАЛЬНОЕ ОКНО */
@@ -124,6 +125,34 @@ header {
     max-width: 340px; 
     border: 1px solid var(--border);
     box-shadow: var(--card-glow);
+}
+
+.modal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Расстояние между подтвердить и отмена */
+}
+
+.modal-buttons button {
+    margin-top: 0 !important;
+}
+
+.btn-secondary { 
+    background: #252525 !important; 
+    color: #777 !important; 
+    box-shadow: none !important; 
+}
+
+/* КАПСУЛА СТАВКИ */
+.bet-control-capsule { 
+    display: flex; 
+    align-items: center; 
+    background: #1a1a1a; 
+    border-radius: 50px !important; 
+    height: 52px; 
+    margin-bottom: 25px; 
+    overflow: hidden; 
+    border: 1px solid var(--border);
 }
 
 #customText { 
@@ -138,56 +167,7 @@ header {
     box-sizing: border-box; 
     font-size: 15px; 
     outline: none;
-}
-
-/* КАПСУЛА СТАВКИ */
-.bet-control-capsule { 
-    display: flex; 
-    align-items: center; 
-    background: #1a1a1a; 
-    border-radius: 50px !important; /* Стала овальной */
-    height: 52px; 
-    margin-bottom: 25px; 
-    overflow: hidden; 
-    border: 1px solid var(--border);
-}
-
-.cap-btn { 
-    width: 60px; 
-    height: 100%; 
-    border: none; 
-    background: transparent; 
-    font-size: 22px; 
-    color: var(--primary); 
-    cursor: pointer; 
-}
-
-.cap-value { 
-    flex: 1; 
-    height: 100%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    background: #141414; 
-    border-left: 1px solid var(--border); 
-    border-right: 1px solid var(--border); 
-}
-
-#manualBet { 
-    width: 100%; 
-    border: none; 
-    background: transparent; 
-    text-align: center; 
-    font-size: 20px; 
-    font-weight: 700; 
-    color: #fff;
-    outline: none; 
-}
-
-.btn-secondary { 
-    background: #252525 !important; 
-    color: #999 !important; 
-    box-shadow: none !important; 
+    resize: none;
 }
 
 #modal { 
@@ -202,5 +182,3 @@ header {
 }
 
 .hidden { display: none !important; }
-h2, h3 { color: var(--text); }
-p { color: var(--secondary-text); }
