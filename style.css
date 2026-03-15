@@ -42,22 +42,31 @@ header {
     border: 1px solid var(--border);
 }
 
-/* КАРТОЧКИ */
+/* КАРТОЧКИ: Идеально ровные отступы 26px со всех сторон */
 .case-card, .expert-card { 
     background: var(--card-bg); 
     border-radius: 32px !important; 
-    padding: 26px !important; 
+    padding: 26px !important; /* Ровно со всех сторон */
     margin-bottom: 20px; 
     border: 1px solid var(--border);
     box-shadow: var(--card-glow);
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
 }
 
-.case-card h2, .case-card h3, .expert-card h3 { margin: 0 0 10px 0; }
-.case-card p, .expert-card p { color: var(--secondary-text); margin: 0 0 24px 0 !important; line-height: 1.5; font-size: 15px; }
+.case-card h2, .case-card h3, .expert-card h3 { 
+    margin: 0 0 15px 0 !important; /* Отступ заголовка от текста */
+}
 
-/* КНОПКИ: Основной объемный стиль */
+.case-card p, .expert-card p { 
+    color: var(--secondary-text); 
+    margin: 0 0 20px 0 !important; /* Отступ текста от кнопки/края */
+    line-height: 1.5; 
+    font-size: 15px; 
+}
+
+/* КНОПКИ: Объемный стиль */
 .main-btn, .case-card button, .custom-btn { 
     width: 100%; 
     background: var(--primary) !important; 
@@ -68,105 +77,98 @@ header {
     font-weight: 600; 
     font-size: 15px; 
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     box-shadow: 
         inset 0 17px 54px rgba(197, 215, 246, 0.4), 
         inset 0 -37px 54px rgba(4, 55, 163, 0.4), 
         0 4px 15px rgba(0, 0, 0, 0.4) !important;
-    transition: transform 0.1s ease;
 }
 
-/* КНОПКА "МОЙ ПРОГНОЗ" */
+/* КНОПКА "МОЙ ПРОГНОЗ" (через скрипт или класс) */
 .voted-btn {
     background: #001E43 !important;
     color: #136AFF !important;
     box-shadow: inset 0 0 12px rgba(19, 106, 255, 0.45) !important;
 }
 
-/* КНОПКА НАЗАД */
+/* КНОПКА НАЗАД: Центрирование */
 .back-link { 
     display: block !important;
     text-align: center !important; 
     color: var(--secondary-text) !important; 
     margin: 30px auto !important; 
+    padding: 10px !important;
     cursor: pointer; 
     font-size: 15px;
-    width: 100%;
+    width: auto !important;
 }
 
-/* МОДАЛЬНОЕ ОКНО */
+/* МОДАЛЬНОЕ ОКНО: Фикс отступа сверху */
 .modal-content { 
     background: var(--card-bg); 
-    padding: 30px; 
+    padding: 26px !important; /* Ровный отступ со всех сторон */
     border-radius: 32px !important; 
     width: 85%; 
     max-width: 340px; 
     border: 1px solid var(--border);
+    box-sizing: border-box;
 }
+
+.modal-content h3 { margin-top: 0 !important; margin-bottom: 20px !important; }
 
 .modal-buttons { display: flex; flex-direction: column; gap: 12px; }
-.modal-buttons button { margin-top: 0 !important; }
 .btn-secondary { background: #252525 !important; color: #777 !important; box-shadow: none !important; }
 
-/* --- РЕГУЛИРОВЩИК (FIXED) --- */
-.bet-control-capsule { 
-    display: flex; 
-    align-items: center; 
-    background: #1a1a1a; 
-    border-radius: 50px !important; 
-    height: 52px; 
-    margin-bottom: 25px; 
-    overflow: hidden; 
-    border: 1px solid var(--border);
-    padding: 0 !important;
-}
+/* --- РЕГУЛИРОВЩИК (ВОЗВРАТ К 1 ВЕРСИИ) --- */
+ .bet-control-capsule {  
+     display: flex;  
+     align-items: center;  
+     background: #1a1a1a;  
+     border-radius: 50px !important;  
+     height: 64px;  
+     margin-bottom: 25px;  
+     overflow: hidden;  
+     border: 1px solid var(--border); 
+     padding: 0 !important;
+ } 
 
-/* Принудительно сбрасываем стили кнопок ТОЛЬКО внутри капсулы */
-.bet-control-capsule .cap-btn { 
-    width: 60px !important; 
-    height: 100% !important; 
-    border: none !important; 
-    background: transparent !important; 
-    font-size: 24px !important; 
-    color: var(--primary) !important; 
-    cursor: pointer; 
-    padding: 0 !important;
-    border-radius: 0 !important; /* Отменяем скругление */
-    box-shadow: none !important; /* Отменяем тени */
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-}
+ .cap-btn {  
+     width: 70px !important;  
+     height: 100% !important;  
+     border: none !important;  
+     background: transparent !important;  
+     font-size: 26px !important;  
+     color: var(--primary) !important;  
+     cursor: pointer;  
+     box-shadow: none !important;
+     border-radius: 0 !important;
+ } 
 
-.cap-value { 
-    flex: 1; 
-    height: 100%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    background: #141414; 
-    border-left: 1px solid var(--border); 
-    border-right: 1px solid var(--border); 
-}
+ .cap-value {  
+     flex: 1;  
+     height: 100%;  
+     display: flex;  
+     align-items: center;  
+     justify-content: center;  
+     background: #141414;  
+     border-left: 1px solid var(--border);  
+     border-right: 1px solid var(--border);  
+ } 
 
-#manualBet { 
-    width: 100% !important; 
-    border: none !important; 
-    background: transparent !important; 
-    text-align: center !important; 
-    font-size: 20px !important; 
-    font-weight: 700 !important; 
-    color: #fff !important;
-    outline: none !important; 
-    padding: 0 !important;
-}
+ #manualBet {  
+     width: 100% !important;  
+     border: none !important;  
+     background: transparent !important;  
+     text-align: center !important;  
+     font-size: 24px !important;  
+     font-weight: 800 !important;  
+     color: #fff !important; 
+     outline: none !important;  
+ } 
 
 #customText { 
     width: 100%; height: 100px; margin-bottom: 20px; 
     border-radius: 20px; border: 1px solid var(--border); 
-    background: #1a1a1a; color: #fff; padding: 14px; 
+    background: #111; color: #fff; padding: 14px; 
     box-sizing: border-box; font-size: 15px; outline: none; resize: none;
 }
 
