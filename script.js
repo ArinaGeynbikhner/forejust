@@ -89,7 +89,7 @@ function openCase(id) {
             <div class="expert-card" onclick="prepareVote('expert_2', '${c.experts[1].name}')">
                 <h3>${c.experts[1].name}</h3><p>${c.experts[1].text}</p>
             </div>
-            <button class="custom-btn" onclick="prepareVote('custom', 'Ваш вариант')">Свой вариант</button>
+            <button class="custom-btn" onclick="prepareVote('custom', 'Ваш вариант')">Написать свой вариант</button>
             <div class="back-link" onclick="backToList()">← Назад</div>
         `;
     }
