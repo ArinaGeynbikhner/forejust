@@ -74,8 +74,8 @@ function openCase(id) {
                          (hasVoted.choice === 'expert_2' ? c.experts[1].name : "Ваш вариант");
 
         view.innerHTML = `
-            <div class="expert-card" style="border: 2px solid #007bff;">
-                <p style="color: #007bff;">✅ Вы участвуете</p>
+            <div class="expert-card" style="border: 2px solid #136AFF;">
+                <p style="color: #136AFF;">✅ Вы участвуете</p>
                 <h3>${choiceText}</h3>
                 <p>Ставка: ${hasVoted.bet} 💎</p>
             </div>

@@ -1,12 +1,12 @@
 :root {
-    --primary: #24a1de; 
-    --bg-bottom: #1a1a1a; /* Мягкий графитовый для низа */
-    --bg-top: #000000;    /* ЧИСТО ЧЕРНЫЙ для верха */
-    --card-bg: #141414;   /* Нейтральный фон карточек */
+    --primary: #136AFF; 
+    --bg-bottom: #1a1a1a;
+    --bg-top: #000000;   
+    --card-bg: #141414;  
     --text: #ffffff;    
     --secondary-text: #999999; 
     --border: rgba(255, 255, 255, 0.08);
-    --card-glow: inset 0 0 25px rgba(255, 255, 255, 0.03); /* Микро-блик */
+    --card-glow: inset 0 0 25px rgba(255, 255, 255, 0.03);
 }
 
 html {
@@ -14,14 +14,13 @@ html {
 }
 
 body { 
-    /* ГРАДИЕНТ: Сверху вниз. Верх (0-30%) - четко черный, к низу (100%) - графит */
     background: linear-gradient(
         to bottom, 
         #000000 0%, 
         #000000 30%, 
         var(--bg-bottom) 100%
     );
-    background-attachment: fixed; /* Фиксирует фон, чтобы он не скроллился */
+    background-attachment: fixed;
     background-repeat: no-repeat;
     color: var(--text);
     margin: 0; 
@@ -41,41 +40,46 @@ header {
 
 .tokens { 
     background: var(--card-bg); 
-    padding: 8px 16px; 
-    border-radius: 20px; 
+    padding: 8px 20px; 
+    border-radius: 50px; /* Овальная форма для плашки токенов */
     font-weight: 700; 
     color: var(--primary); 
     border: 1px solid var(--border);
     box-shadow: var(--card-glow);
 }
 
-/* Карточки с микро-бликом по краям */
+/* Карточки с увеличенным в 2 раза радиусом (32px) */
 .case-card, .expert-card { 
     background: var(--card-bg); 
-    border-radius: 16px; 
-    padding: 20px; 
+    border-radius: 32px; 
+    padding: 24px; 
     margin-bottom: 15px; 
     border: 1px solid var(--border);
     box-shadow: var(--card-glow);
 }
 
-/* Кнопки с внутренним неоновым сиянием */
+/* Кнопки: Овальные + Двойная внутренняя тень для объема */
 .main-btn, .case-card button { 
     width: 100%; 
     background: var(--primary); 
     color: #fff; 
     border: none; 
-    padding: 16px; 
-    border-radius: 14px; 
+    padding: 18px; 
+    border-radius: 50px; /* Овальные края */
     font-weight: 600; 
     font-size: 16px; 
     cursor: pointer;
-    box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.3), 0 4px 15px rgba(0, 0, 0, 0.4);
-    transition: transform 0.1s ease;
+    /* Эффект объема по твоим параметрам */
+    box-shadow: 
+        inset 0 17px 54px rgba(197, 215, 246, 0.4),  /* Верхняя светлая */
+        inset 0 -37px 54px rgba(4, 55, 163, 0.4),   /* Нижняя темная */
+        0 4px 15px rgba(0, 0, 0, 0.4);              /* Внешняя тень для глубины */
+    transition: transform 0.1s ease, filter 0.2s ease;
 }
 
 .main-btn:active, .case-card button:active {
-    transform: scale(0.98);
+    transform: scale(0.97);
+    filter: brightness(1.1);
 }
 
 .custom-btn { 
@@ -84,7 +88,7 @@ header {
     color: var(--primary); 
     border: 1.5px solid var(--primary); 
     padding: 14px; 
-    border-radius: 14px; 
+    border-radius: 50px; /* Тоже овальная */
     margin-top: 10px; 
     font-size: 15px; 
     font-weight: 600; 
@@ -105,7 +109,7 @@ header {
     width: 100%; 
     height: 110px; 
     margin-bottom: 20px; 
-    border-radius: 14px; 
+    border-radius: 20px; 
     border: 1px solid var(--border); 
     background: #222; 
     color: #fff;
@@ -116,12 +120,11 @@ header {
     outline: none;
 }
 
-/* Плашка ставки */
 .bet-control-capsule { 
     display: flex; 
     align-items: center; 
     background: #222; 
-    border-radius: 16px; 
+    border-radius: 50px; /* Капсула должна быть овальной */
     height: 64px; 
     margin-bottom: 25px; 
     overflow: hidden; 
@@ -169,7 +172,7 @@ header {
 .btn-secondary { 
     background: #2a2a2a !important; 
     color: #888 !important; 
-    box-shadow: none !important; 
+    box-shadow: none !important; /* Убираем объем для второстепенной кнопки */
 }
 
 #modal { 
@@ -178,7 +181,7 @@ header {
     left: 0; 
     width: 100%; 
     height: 100%; 
-    background: rgba(0,0,0,0.9); 
+    background: rgba(0,0,0,0.85); 
     display: flex; 
     align-items: center; 
     justify-content: center; 
@@ -188,8 +191,8 @@ header {
 
 .modal-content { 
     background: var(--card-bg); 
-    padding: 28px; 
-    border-radius: 24px; 
+    padding: 32px; 
+    border-radius: 32px; /* Под радиус карточек */
     width: 88%; 
     max-width: 360px; 
     border: 1px solid var(--border);
