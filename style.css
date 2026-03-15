@@ -6,7 +6,7 @@
     --text: #ffffff;    
     --secondary-text: #999999; 
     --border: rgba(255, 255, 255, 0.08);
-    --card-glow: inset 0 0 30px rgba(255, 255, 255, 0.06);
+    --card-glow: inset 0 0 25px rgba(255, 255, 255, 0.03);
 }
 
 html {
@@ -36,7 +36,7 @@ header {
     justify-content: space-between; 
     align-items: center; 
     margin-bottom: 25px; 
-    background: transparent;
+    padding: 0 5px;
 }
 
 .tokens { 
@@ -50,23 +50,37 @@ header {
     box-shadow: var(--card-glow);
 }
 
-/* Карточки: радиус x2 (32px) */
+/* КАРТОЧКИ: Радиус 32px + увеличенные отступы внутри */
 .case-card, .expert-card { 
     background: var(--card-bg); 
     border-radius: 32px; 
-    padding: 22px; 
-    margin-bottom: 15px; 
+    padding: 26px; /* Чуть больше паддинг для красоты */
+    margin-bottom: 20px; 
     border: 1px solid var(--border);
     box-shadow: var(--card-glow);
+    display: flex;
+    flex-direction: column;
 }
 
-/* Кнопки: уменьшенная высота + овальные + объем */
+.case-card h2, .case-card h3 {
+    margin: 0 0 10px 0;
+}
+
+/* ТЕКСТ В КАРТОЧКАХ: Отступ снизу, чтобы не лип к кнопке */
+.case-card p { 
+    color: var(--secondary-text); 
+    margin: 0 0 24px 0; /* 24px отступа до кнопки */
+    line-height: 1.5;
+    font-size: 15px;
+}
+
+/* КНОПКИ: Овальные, компактные и объемные */
 .main-btn, .case-card button { 
     width: 100%; 
     background: var(--primary); 
     color: #fff; 
     border: none; 
-    padding: 12px 20px; /* Уменьшенная высота */
+    padding: 12px 20px; 
     border-radius: 50px; 
     font-weight: 600; 
     font-size: 15px; 
@@ -74,7 +88,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Адаптированные под высоту тени */
+    /* Тени по твоим параметрам (адаптированы под высоту) */
     box-shadow: 
         inset 0 10px 40px rgba(197, 215, 246, 0.4), 
         inset 0 -20px 40px rgba(4, 55, 163, 0.4), 
@@ -94,16 +108,26 @@ header {
     border: 1.5px solid var(--primary); 
     padding: 10px; 
     border-radius: 50px; 
-    margin-top: 10px; 
+    margin-top: 12px; 
     font-size: 14px; 
     font-weight: 600; 
 }
 
-/* Модалка и элементы */
+/* МОДАЛЬНОЕ ОКНО */
+.modal-content { 
+    background: var(--card-bg); 
+    padding: 30px; 
+    border-radius: 32px; 
+    width: 85%; 
+    max-width: 340px; 
+    border: 1px solid var(--border);
+    box-shadow: var(--card-glow);
+}
+
 #customText { 
     width: 100%; 
     height: 100px; 
-    margin-bottom: 15px; 
+    margin-bottom: 20px; 
     border-radius: 20px; 
     border: 1px solid var(--border); 
     background: #1a1a1a; 
@@ -111,17 +135,17 @@ header {
     padding: 14px; 
     box-sizing: border-box; 
     font-size: 15px; 
-    resize: none;
     outline: none;
 }
 
+/* КАПСУЛА СТАВКИ */
 .bet-control-capsule { 
     display: flex; 
     align-items: center; 
     background: #1a1a1a; 
     border-radius: 50px; 
-    height: 54px; /* Уменьшенная высота капсулы */
-    margin-bottom: 20px; 
+    height: 52px; 
+    margin-bottom: 25px; 
     overflow: hidden; 
     border: 1px solid var(--border);
 }
@@ -164,20 +188,10 @@ header {
     box-shadow: none !important; 
 }
 
-.modal-content { 
-    background: var(--card-bg); 
-    padding: 24px; 
-    border-radius: 32px; 
-    width: 85%; 
-    max-width: 340px; 
-    border: 1px solid var(--border);
-    box-shadow: var(--card-glow);
-}
-
 #modal { 
     position: fixed; 
     top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.8); 
+    background: rgba(0,0,0,0.85); 
     display: flex; 
     align-items: center; 
     justify-content: center; 
@@ -186,5 +200,5 @@ header {
 }
 
 .hidden { display: none !important; }
-h2, h3 { color: var(--text); margin-top: 0; margin-bottom: 15px;}
-p { color: var(--secondary-text); margin-bottom: 8px; font-size: 14px;}
+h2, h3 { color: var(--text); }
+p { color: var(--secondary-text); }
