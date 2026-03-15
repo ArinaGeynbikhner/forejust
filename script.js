@@ -53,7 +53,7 @@ function renderCases() {
         div.innerHTML = `
             <h2>${c.title}</h2>
             <p>${c.description}</p>
-            <button class="${hasVoted ? 'voted-btn' : ''}" onclick="openCase(${c.id})">${hasVoted ? 'Мой прогноз' : 'Сделать прогноз'}</button>
+            <button onclick="openCase(${c.id})">${hasVoted ? 'Мой прогноз' : 'Сделать прогноз'}</button>
         `;
         list.appendChild(div);
     });
