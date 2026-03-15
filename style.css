@@ -17,7 +17,7 @@ body {
     background-repeat: no-repeat;
     color: var(--text);
     margin: 0; 
-    padding: 15px; 
+    padding: 15px; /* Боковые отступы для всего контента */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     min-height: 100vh; 
     box-sizing: border-box;
@@ -42,11 +42,11 @@ header {
     border: 1px solid var(--border);
 }
 
-/* КАРТОЧКИ: Идеально ровные отступы 26px со всех сторон */
+/* КАРТОЧКИ: Единый стандарт 26px */
 .case-card, .expert-card { 
     background: var(--card-bg); 
     border-radius: 32px !important; 
-    padding: 26px !important; /* Ровно со всех сторон */
+    padding: 26px !important; 
     margin-bottom: 20px; 
     border: 1px solid var(--border);
     box-shadow: var(--card-glow);
@@ -56,17 +56,17 @@ header {
 }
 
 .case-card h2, .case-card h3, .expert-card h3 { 
-    margin: 0 0 15px 0 !important; /* Отступ заголовка от текста */
+    margin: 0 0 15px 0 !important; 
 }
 
 .case-card p, .expert-card p { 
     color: var(--secondary-text); 
-    margin: 0 0 20px 0 !important; /* Отступ текста от кнопки/края */
+    margin: 0 0 20px 0 !important; 
     line-height: 1.5; 
     font-size: 15px; 
 }
 
-/* КНОПКИ: Объемный стиль */
+/* КНОПКИ */
 .main-btn, .case-card button, .custom-btn { 
     width: 100%; 
     background: var(--primary) !important; 
@@ -83,34 +83,31 @@ header {
         0 4px 15px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* КНОПКА "МОЙ ПРОГНОЗ" (через скрипт или класс) */
 .voted-btn {
     background: #001E43 !important;
     color: #136AFF !important;
     box-shadow: inset 0 0 12px rgba(19, 106, 255, 0.45) !important;
 }
 
-/* КНОПКА НАЗАД: Центрирование */
 .back-link { 
     display: block !important;
     text-align: center !important; 
     color: var(--secondary-text) !important; 
     margin: 30px auto !important; 
-    padding: 10px !important;
     cursor: pointer; 
     font-size: 15px;
-    width: auto !important;
 }
 
-/* МОДАЛЬНОЕ ОКНО: Фикс отступа сверху */
+/* МОДАЛЬНОЕ ОКНО: Теперь точно по ширине карточек */
 .modal-content { 
     background: var(--card-bg); 
-    padding: 26px !important; /* Ровный отступ со всех сторон */
+    padding: 26px !important; 
     border-radius: 32px !important; 
-    width: 85%; 
-    max-width: 340px; 
+    width: calc(100% - 0px); /* Растягиваем на всю ширину контейнера */
+    max-width: 100%; 
     border: 1px solid var(--border);
     box-sizing: border-box;
+    margin: 0 15px; /* Совпадает с padding у body */
 }
 
 .modal-content h3 { margin-top: 0 !important; margin-bottom: 20px !important; }
@@ -118,7 +115,7 @@ header {
 .modal-buttons { display: flex; flex-direction: column; gap: 12px; }
 .btn-secondary { background: #252525 !important; color: #777 !important; box-shadow: none !important; }
 
-/* --- РЕГУЛИРОВЩИК (ВОЗВРАТ К 1 ВЕРСИИ) --- */
+/* РЕГУЛИРОВЩИК */
  .bet-control-capsule {  
      display: flex;  
      align-items: center;  
