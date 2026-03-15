@@ -6,129 +6,123 @@
     --text: #ffffff;    
     --secondary-text: #999999; 
     --border: rgba(255, 255, 255, 0.08);
-    --card-glow: inset 0 0 25px rgba(255, 255, 255, 0.03);
 }
 
 html { height: 100%; }
 
 body { 
-    background: linear-gradient(to bottom, #000000 0%, #000000 30%, var(--bg-bottom) 100%);
-    background-attachment: fixed;
+    background: linear-gradient(to bottom, #000000 0%, #000000 30%, var(--bg-bottom) 100%) no-repeat fixed;
     color: var(--text);
-    margin: 0; 
-    padding: 15px; 
+    margin: 0; padding: 15px; 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    min-height: 100vh; 
+    min-height: 100vh;
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
 }
 
-/* КАРТОЧКИ КЕЙСОВ */
+/* КАРТОЧКИ КЕЙСОВ (Главная страница) */
 .case-card { 
     background: var(--card-bg); 
-    border-radius: 32px; 
-    padding: 26px; 
+    border-radius: 32px !important; 
+    padding: 24px !important; 
     margin-bottom: 20px; 
     border: 1px solid var(--border);
-    box-shadow: var(--card-glow);
 }
 
-/* КАРТОЧКИ ЭКСПЕРТОВ (Компактные) */
+/* КАРТОЧКИ ЭКСПЕРТОВ (Внутри кейса - КОМПАКТНЫЕ) */
 .expert-card { 
     background: var(--card-bg) !important; 
     border-radius: 24px !important; 
-    padding: 14px 20px !important; /* Уменьшили высоту экспертов */
-    margin-bottom: 12px !important; 
+    padding: 12px 20px !important; /* Минимум отступов сверху/снизу */
+    margin-bottom: 10px !important; 
     border: 1px solid var(--border) !important;
-    cursor: pointer;
 }
 
-.expert-card h3 { margin: 0 0 4px 0 !important; font-size: 17px !important; }
-.expert-card p { margin: 0 !important; font-size: 14px !important; line-height: 1.3 !important; }
+.expert-card h3 { margin: 0 0 2px 0 !important; font-size: 16px !important; }
+.expert-card p { margin: 0 !important; font-size: 13px !important; line-height: 1.3 !important; }
 
-/* ОБЩИЙ СТИЛЬ ОБЪЕМНЫХ КНОПОК (включая "Свой вариант") */
+/* ОБЩИЙ СТИЛЬ КНОПОК (Объемные и овальные) */
 .main-btn, .case-card button, .custom-btn { 
-    width: 100%; 
+    width: 100% !important; 
     background: var(--primary) !important; 
     color: #fff !important; 
     border: none !important; 
     padding: 12px 20px !important; 
     border-radius: 50px !important; 
-    font-weight: 600 !important; 
-    font-size: 15px !important; 
+    font-weight: 600 !important;
+    font-size: 15px !important;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Твой объемный эффект */
+    /* Твой эффект объема */
     box-shadow: 
         inset 0 10px 40px rgba(197, 215, 246, 0.4), 
         inset 0 -20px 40px rgba(4, 55, 163, 0.4), 
         0 4px 12px rgba(0, 0, 0, 0.3) !important;
-    transition: transform 0.1s ease;
+    margin-top: 15px;
 }
 
-/* Специальный стиль для кнопки "Свой вариант", чтобы она была чуть темнее, но такой же формы */
-.custom-btn {
-    margin-top: 15px !important;
-    background: #1e1e1e !important;
-    box-shadow: 
-        inset 0 5px 15px rgba(255, 255, 255, 0.05), 
-        0 4px 10px rgba(0, 0, 0, 0.3) !important;
+/* КНОПКА "МОЙ ПРОГНОЗ" (Темно-синяя, менее яркая) */
+/* Мы находим её через атрибут или положение, если она уже нажата */
+.case-card button:active, .case-card button:focus { filter: brightness(1.1); }
+
+/* Специальный стиль для кнопки "Свой вариант" и "Мой прогноз" */
+.custom-btn, .voted-btn {
+    background: #001E43 !important;
+    color: #136AFF !important;
+    box-shadow: inset 0 0 15px rgba(19, 106, 255, 0.45) !important;
+    border: 1px solid rgba(19, 106, 255, 0.2) !important;
 }
 
-/* КНОПКА НАЗАД (Исправленная) */
+/* КНОПКА НАЗАД (Исправлена: серая, по центру) */
 .back-link { 
     display: block !important; 
+    width: 100% !important;
     text-align: center !important; 
     color: var(--secondary-text) !important; 
-    margin: 30px auto !important; /* Центрируем */
-    padding: 10px 20px !important;
+    margin: 25px auto !important; 
+    padding: 10px 0 !important;
     cursor: pointer; 
     font-size: 15px !important;
-    width: fit-content !important; /* Чтобы она не растягивалась на весь экран */
-    text-decoration: none;
+    background: transparent !important;
 }
 
 /* МОДАЛЬНОЕ ОКНО */
 .modal-content { 
     background: var(--card-bg); 
     padding: 28px; 
-    border-radius: 32px; 
-    width: 88%; 
-    max-width: 350px;
+    border-radius: 32px !important; 
     border: 1px solid var(--border);
+    width: 88%;
 }
 
 .modal-buttons { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 15px !important; /* Расстояние между кнопками в модалке */
+    display: flex !important; 
+    flex-direction: column !important; 
+    gap: 12px !important; /* Расстояние между кнопками */
 }
 
-/* Кнопка отмены в модалке */
+.modal-buttons button { margin-top: 0 !important; }
+
+/* Кнопка Отмена */
 .btn-secondary { 
     background: #252525 !important; 
-    color: #888 !important; 
+    color: #777 !important; 
     box-shadow: none !important; 
 }
 
-/* Остальные мелочи */
-.bet-control-capsule { 
-    display: flex; 
-    background: #1a1a1a; 
-    border-radius: 50px; 
-    height: 52px; 
-    margin-bottom: 25px; 
-    border: 1px solid var(--border);
-    overflow: hidden;
+/* Поле ввода и капсула */
+#customText { 
+    width: 100%; height: 90px; border-radius: 20px; 
+    background: #111; color: #fff; padding: 12px; 
+    border: 1px solid var(--border); margin-bottom: 15px;
+    resize: none; outline: none;
 }
 
-#customText { 
-    width: 100%; height: 90px; margin-bottom: 20px; 
-    border-radius: 20px; border: 1px solid var(--border); 
-    background: #111; color: #fff; padding: 14px; 
-    font-size: 15px; outline: none; resize: none;
+.bet-control-capsule { 
+    display: flex; background: #1a1a1a; border-radius: 50px !important; 
+    height: 52px; margin-bottom: 20px; border: 1px solid var(--border);
+    overflow: hidden;
 }
 
 #modal { 
@@ -139,5 +133,5 @@ body {
 }
 
 .hidden { display: none !important; }
-h2, h3 { color: var(--text); }
-p { color: var(--secondary-text); }
+h2, h3 { color: var(--text); margin-top: 0; }
+p { color: var(--secondary-text); margin-top: 0; }
