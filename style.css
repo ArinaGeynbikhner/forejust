@@ -42,7 +42,7 @@ header {
     border: 1px solid var(--border);
 }
 
-/* КАРТОЧКИ: Идентичные отступы 26px */
+/* КАРТОЧКИ */
 .case-card, .expert-card { 
     background: var(--card-bg); 
     border-radius: 32px !important; 
@@ -57,13 +57,13 @@ header {
 .case-card h2, .case-card h3, .expert-card h3 { margin: 0 0 10px 0; }
 .case-card p, .expert-card p { color: var(--secondary-text); margin: 0 0 24px 0 !important; line-height: 1.5; font-size: 15px; }
 
-/* КНОПКИ: Основной стиль */
+/* КНОПКИ: Основной объемный стиль */
 .main-btn, .case-card button, .custom-btn { 
     width: 100%; 
     background: var(--primary) !important; 
     color: #fff !important; 
     border: none !important; 
-    padding: 12px 20px; 
+    padding: 14px 20px; 
     border-radius: 50px !important; 
     font-weight: 600; 
     font-size: 15px; 
@@ -110,7 +110,7 @@ header {
 .modal-buttons button { margin-top: 0 !important; }
 .btn-secondary { background: #252525 !important; color: #777 !important; box-shadow: none !important; }
 
-/* --- РЕГУЛИРОВЩИК СУММЫ СТАВКИ (FIXED) --- */
+/* --- РЕГУЛИРОВЩИК (FIXED) --- */
 .bet-control-capsule { 
     display: flex; 
     align-items: center; 
@@ -120,11 +120,11 @@ header {
     margin-bottom: 25px; 
     overflow: hidden; 
     border: 1px solid var(--border);
-    padding: 0; /* Убираем лишние паддинги */
+    padding: 0 !important;
 }
 
-/* Исправляем кнопки внутри капсулы, чтобы они не были овальными сами по себе */
-.cap-btn { 
+/* Принудительно сбрасываем стили кнопок ТОЛЬКО внутри капсулы */
+.bet-control-capsule .cap-btn { 
     width: 60px !important; 
     height: 100% !important; 
     border: none !important; 
@@ -133,14 +133,12 @@ header {
     color: var(--primary) !important; 
     cursor: pointer; 
     padding: 0 !important;
-    border-radius: 0 !important; /* Убираем овальность внутри */
-    box-shadow: none !important; /* Убираем тени внутри */
-    display: flex;
+    border-radius: 0 !important; /* Отменяем скругление */
+    box-shadow: none !important; /* Отменяем тени */
+    display: flex !important;
     align-items: center;
     justify-content: center;
 }
-
-.cap-btn:active { background: rgba(255,255,255,0.05) !important; }
 
 .cap-value { 
     flex: 1; 
