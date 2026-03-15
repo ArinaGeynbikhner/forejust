@@ -40,10 +40,9 @@ header {
     font-size: 14px;
     color: var(--primary); 
     border: 1px solid var(--border);
-    box-shadow: var(--card-glow);
 }
 
-/* КАРТОЧКИ: И кейсы, и эксперты теперь имеют одинаковые отступы 26px */
+/* КАРТОЧКИ: Идентичные отступы 26px */
 .case-card, .expert-card { 
     background: var(--card-bg); 
     border-radius: 32px !important; 
@@ -53,28 +52,18 @@ header {
     box-shadow: var(--card-glow);
     display: flex;
     flex-direction: column;
-    box-sizing: border-box;
 }
 
-.case-card h2, .case-card h3, .expert-card h3 {
-    margin: 0 0 10px 0;
-}
+.case-card h2, .case-card h3, .expert-card h3 { margin: 0 0 10px 0; }
+.case-card p, .expert-card p { color: var(--secondary-text); margin: 0 0 24px 0 !important; line-height: 1.5; font-size: 15px; }
 
-/* ТЕКСТ В КАРТОЧКАХ */
-.case-card p, .expert-card p { 
-    color: var(--secondary-text); 
-    margin: 0 0 28px 0 !important; 
-    line-height: 1.5;
-    font-size: 15px;
-}
-
-/* КНОПКИ: Основной объемный стиль */
+/* КНОПКИ: Основной стиль */
 .main-btn, .case-card button, .custom-btn { 
     width: 100%; 
     background: var(--primary) !important; 
     color: #fff !important; 
     border: none !important; 
-    padding: 14px 20px; 
+    padding: 12px 20px; 
     border-radius: 50px !important; 
     font-weight: 600; 
     font-size: 15px; 
@@ -89,23 +78,14 @@ header {
     transition: transform 0.1s ease;
 }
 
-/* КНОПКА "МОЙ ПРОГНОЗ": Темный стиль (когда кнопка в карточке с уже сделанным выбором) */
-/* Мы ищем кнопку, которая идет после текста "✅ Вы участвуете" или просто меняем её цвет */
-.case-card button:not(:last-child), 
-button[onclick*="openCase"] {
-    /* Это правило применится к кнопке в списке, если ты добавишь ей класс в JS, 
-       но пока мы сделаем универсальный селектор для неактивных состояний */
-}
-
-/* Если в script.js кнопка получает текст 'Мой прогноз', этот стиль её перекрасит */
-button:contains('Мой прогноз'), 
+/* КНОПКА "МОЙ ПРОГНОЗ" */
 .voted-btn {
     background: #001E43 !important;
     color: #136AFF !important;
     box-shadow: inset 0 0 12px rgba(19, 106, 255, 0.45) !important;
 }
 
-/* КНОПКА НАЗАД: По центру внизу */
+/* КНОПКА НАЗАД */
 .back-link { 
     display: block !important;
     text-align: center !important; 
@@ -124,26 +104,13 @@ button:contains('Мой прогноз'),
     width: 85%; 
     max-width: 340px; 
     border: 1px solid var(--border);
-    box-shadow: var(--card-glow);
 }
 
-.modal-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Расстояние между подтвердить и отмена */
-}
+.modal-buttons { display: flex; flex-direction: column; gap: 12px; }
+.modal-buttons button { margin-top: 0 !important; }
+.btn-secondary { background: #252525 !important; color: #777 !important; box-shadow: none !important; }
 
-.modal-buttons button {
-    margin-top: 0 !important;
-}
-
-.btn-secondary { 
-    background: #252525 !important; 
-    color: #777 !important; 
-    box-shadow: none !important; 
-}
-
-/* КАПСУЛА СТАВКИ */
+/* --- РЕГУЛИРОВЩИК СУММЫ СТАВКИ (FIXED) --- */
 .bet-control-capsule { 
     display: flex; 
     align-items: center; 
@@ -153,32 +120,63 @@ button:contains('Мой прогноз'),
     margin-bottom: 25px; 
     overflow: hidden; 
     border: 1px solid var(--border);
+    padding: 0; /* Убираем лишние паддинги */
 }
 
-#customText { 
-    width: 100%; 
-    height: 100px; 
-    margin-bottom: 20px; 
-    border-radius: 20px; 
-    border: 1px solid var(--border); 
-    background: #1a1a1a; 
-    color: #fff;
-    padding: 14px; 
-    box-sizing: border-box; 
-    font-size: 15px; 
-    outline: none;
-    resize: none;
+/* Исправляем кнопки внутри капсулы, чтобы они не были овальными сами по себе */
+.cap-btn { 
+    width: 60px !important; 
+    height: 100% !important; 
+    border: none !important; 
+    background: transparent !important; 
+    font-size: 24px !important; 
+    color: var(--primary) !important; 
+    cursor: pointer; 
+    padding: 0 !important;
+    border-radius: 0 !important; /* Убираем овальность внутри */
+    box-shadow: none !important; /* Убираем тени внутри */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#modal { 
-    position: fixed; 
-    top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.85); 
+.cap-btn:active { background: rgba(255,255,255,0.05) !important; }
+
+.cap-value { 
+    flex: 1; 
+    height: 100%; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    z-index: 999; 
-    backdrop-filter: blur(10px); 
+    background: #141414; 
+    border-left: 1px solid var(--border); 
+    border-right: 1px solid var(--border); 
+}
+
+#manualBet { 
+    width: 100% !important; 
+    border: none !important; 
+    background: transparent !important; 
+    text-align: center !important; 
+    font-size: 20px !important; 
+    font-weight: 700 !important; 
+    color: #fff !important;
+    outline: none !important; 
+    padding: 0 !important;
+}
+
+#customText { 
+    width: 100%; height: 100px; margin-bottom: 20px; 
+    border-radius: 20px; border: 1px solid var(--border); 
+    background: #1a1a1a; color: #fff; padding: 14px; 
+    box-sizing: border-box; font-size: 15px; outline: none; resize: none;
+}
+
+#modal { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.85); display: flex; 
+    align-items: center; justify-content: center; 
+    z-index: 999; backdrop-filter: blur(10px); 
 }
 
 .hidden { display: none !important; }
