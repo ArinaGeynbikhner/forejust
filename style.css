@@ -9,18 +9,15 @@
     --card-glow: inset 0 0 25px rgba(255, 255, 255, 0.03);
 }
 
-html, body { 
-    height: 100%; 
-    margin: 0; 
-    padding: 0; 
-}
+html { height: 100%; }
 
 body { 
     background: linear-gradient(to bottom, #000000 0%, #000000 30%, var(--bg-bottom) 100%);
     background-attachment: fixed;
     background-repeat: no-repeat;
     color: var(--text);
-    padding: 15px; /* Внешний отступ карточек от краев экрана */
+    margin: 0; 
+    padding: 15px; /* Боковые отступы для всего контента */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     min-height: 100vh; 
     box-sizing: border-box;
@@ -45,11 +42,11 @@ header {
     border: 1px solid var(--border);
 }
 
-/* КАРТОЧКИ: Образец геометрии */
+/* КАРТОЧКИ: Единый стандарт 26px */
 .case-card, .expert-card { 
     background: var(--card-bg); 
     border-radius: 32px !important; 
-    padding: 26px !important; /* Внутренние отступы */
+    padding: 26px !important; 
     margin-bottom: 20px; 
     border: 1px solid var(--border);
     box-shadow: var(--card-glow);
@@ -58,10 +55,18 @@ header {
     box-sizing: border-box;
 }
 
-.case-card h2, .case-card h3, .expert-card h3 { margin: 0 0 15px 0 !important; }
-.case-card p, .expert-card p { color: var(--secondary-text); margin: 0 0 24px 0 !important; line-height: 1.5; font-size: 15px; }
+.case-card h2, .case-card h3, .expert-card h3 { 
+    margin: 0 0 15px 0 !important; 
+}
 
-/* КНОПКИ: Объемные */
+.case-card p, .expert-card p { 
+    color: var(--secondary-text); 
+    margin: 0 0 20px 0 !important; 
+    line-height: 1.5; 
+    font-size: 15px; 
+}
+
+/* КНОПКИ */
 .main-btn, .case-card button, .custom-btn { 
     width: 100%; 
     background: var(--primary) !important; 
@@ -78,105 +83,97 @@ header {
         0 4px 15px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* КНОПКА "МОЙ ПРОГНОЗ" */
 .voted-btn {
     background: #001E43 !important;
     color: #136AFF !important;
     box-shadow: inset 0 0 12px rgba(19, 106, 255, 0.45) !important;
 }
 
-/* КНОПКА НАЗАД */
 .back-link { 
     display: block !important;
     text-align: center !important; 
     color: var(--secondary-text) !important; 
-    margin: 30px auto !important; 
-    padding: 10px !important;
+    margin: 15px auto !important; 
     cursor: pointer; 
     font-size: 15px;
 }
 
-/* МОДАЛЬНОЕ ОКНО: Ширина как у карточек */
-#modal { 
-    position: fixed; 
-    top: 0; left: 0; 
-    width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.85); 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    z-index: 999; 
-    backdrop-filter: blur(10px); 
-    padding: 15px; /* Тот же отступ от краев экрана, что и у body */
-    box-sizing: border-box;
-}
-
+/* МОДАЛЬНОЕ ОКНО: Теперь точно по ширине карточек */
 .modal-content { 
     background: var(--card-bg); 
-    padding: 26px !important; /* Внутренний отступ как в карточках */
+    padding: 26px !important; 
     border-radius: 32px !important; 
-    width: 100%; /* Занимает всё место внутри паддинга модалки */
+    width: calc(100% - 0px); /* Растягиваем на всю ширину контейнера */
     max-width: 100%; 
     border: 1px solid var(--border);
     box-sizing: border-box;
+    margin: 0 15px; /* Совпадает с padding у body */
 }
 
 .modal-content h3 { margin-top: 0 !important; margin-bottom: 20px !important; }
+
 .modal-buttons { display: flex; flex-direction: column; gap: 12px; }
 .btn-secondary { background: #252525 !important; color: #777 !important; box-shadow: none !important; }
 
-/* РЕГУЛИРОВЩИК СТАВКИ (ВОЗВРАТ К ИДЕАЛУ) */
-.bet-control-capsule {  
-    display: flex;  
-    align-items: center;  
-    background: #1a1a1a;  
-    border-radius: 50px !important;  
-    height: 64px;  
-    margin-bottom: 25px;  
-    overflow: hidden;  
-    border: 1px solid var(--border); 
-    padding: 0 !important;
-} 
+/* РЕГУЛИРОВЩИК */
+ .bet-control-capsule {  
+     display: flex;  
+     align-items: center;  
+     background: #1a1a1a;  
+     border-radius: 50px !important;  
+     height: 64px;  
+     margin-bottom: 25px;  
+     overflow: hidden;  
+     border: 1px solid var(--border); 
+     padding: 0 !important;
+ } 
 
-.cap-btn {  
-    width: 70px !important;  
-    height: 100% !important;  
-    border: none !important;  
-    background: transparent !important;  
-    font-size: 26px !important;  
-    color: var(--primary) !important;  
-    cursor: pointer;  
-    box-shadow: none !important;
-    border-radius: 0 !important;
-} 
+ .cap-btn {  
+     width: 70px !important;  
+     height: 100% !important;  
+     border: none !important;  
+     background: transparent !important;  
+     font-size: 26px !important;  
+     color: var(--primary) !important;  
+     cursor: pointer;  
+     box-shadow: none !important;
+     border-radius: 0 !important;
+ } 
 
-.cap-value {  
-    flex: 1;  
-    height: 100%;  
-    display: flex;  
-    align-items: center;  
-    justify-content: center;  
-    background: #141414;  
-    border-left: 1px solid var(--border);  
-    border-right: 1px solid var(--border);  
-} 
+ .cap-value {  
+     flex: 1;  
+     height: 100%;  
+     display: flex;  
+     align-items: center;  
+     justify-content: center;  
+     background: #141414;  
+     border-left: 1px solid var(--border);  
+     border-right: 1px solid var(--border);  
+ } 
 
-#manualBet {  
-    width: 100% !important;  
-    border: none !important;  
-    background: transparent !important;  
-    text-align: center !important;  
-    font-size: 24px !important;  
-    font-weight: 800 !important;  
-    color: #fff !important; 
-    outline: none !important;  
-} 
+ #manualBet {  
+     width: 100% !important;  
+     border: none !important;  
+     background: transparent !important;  
+     text-align: center !important;  
+     font-size: 24px !important;  
+     font-weight: 800 !important;  
+     color: #fff !important; 
+     outline: none !important;  
+ } 
 
 #customText { 
     width: 100%; height: 100px; margin-bottom: 20px; 
     border-radius: 20px; border: 1px solid var(--border); 
     background: #111; color: #fff; padding: 14px; 
     box-sizing: border-box; font-size: 15px; outline: none; resize: none;
+}
+
+#modal { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.85); display: flex; 
+    align-items: center; justify-content: center; 
+    z-index: 999; backdrop-filter: blur(10px); 
 }
 
 .hidden { display: none !important; }
